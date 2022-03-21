@@ -1,6 +1,6 @@
 <?php
-    include("/xampp/htdocs/KinhDoanhDienThoai/ket_noi.php");
-    include("/xampp/htdocs/KinhDoanhDienThoai/ham.php");
+    include("ket_noi.php");
+    include("ham.php");
 
     if( isset($_POST['login']) ) {
         $username = $_POST['username'];
