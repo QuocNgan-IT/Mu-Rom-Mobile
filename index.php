@@ -21,13 +21,15 @@
     </head>
 
     <body>
+
+    <!-- Header -->
     <table style="width: 100%; height: 50px; background: #B51E1E; text-align: center; font-size: 35px; color: white;">
           <tr>
             <td width="50px">
               <img src="./hinh_anh/banner/icon.png">
             </td>
             <td align="left">
-              <a href="index.php"><div style="font-family: Reem Kufi; color: white;">Mũ Rơm Mobile</div></a>
+              <a href=" <?php echo $SITEURL.'index.php'; ?> "><div style="font-family: Reem Kufi; color: white;">Mũ Rơm Mobile</div></a>
             </td>
             <td>
                 <?php include("chuc_nang/tim_kiem/thanh_tim_kiem.php"); ?>
@@ -36,12 +38,12 @@
                 <?php
                     // include("chuc_nang/tim_kiem/vung_tim_kiem.php");
                     if( !isset($_SESSION['xac_dinh_dang_nhap']) or $_SESSION['xac_dinh_dang_nhap']=="khong" ) {
-                        echo "<input type=button onClick=window.open('./chuc_nang/dang_nhap/dang_nhap.php'); value='Đăng nhập'>";
+                        echo "<input type=button onClick=window.open('chuc_nang/dang_nhap/dang_nhap.php'); value='Đăng nhập'>";
                         //include("chuc_nang/dang_nhap/dang_nhap.php");
                     }
                     else {
                         if( $_SESSION['xac_dinh_dang_nhap']=="co" ) {
-                            echo "<input type=button onClick=window.open('./chuc_nang/dang_nhap/dang_xuat.php'); value='Đăng xuất'>";
+                            echo "<input type=button onClick=window.open('chuc_nang/dang_nhap/dang_xuat.php'); value='Đăng xuất'>";
                         }
                     }                         
                 ?>
@@ -59,6 +61,7 @@
           </tr>
         </table> 
 
+        <!-- Main -->
         <table width="100%" height="auto">
             <tr>
                 <td colspan="3">
@@ -86,7 +89,6 @@
                     <?php
                        include("chuc_nang/dieu_huong.php");
                     ?>
-                    
                 </td>
                 <td width="10%" valign="top">
                     

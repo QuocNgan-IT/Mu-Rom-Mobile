@@ -28,12 +28,7 @@
 
         // case "gio_hang":
         //     include("chuc_nang/gio_hang/gio_hang.php");
-        //     break;
-
-        // case "dang_xuat":
-        //     include("chuc_nang/dang_nhap/dang_xuat.php");
-            //thong_bao_html_chuyen_trang("Bạn đã đăng xuất !", "index.php");
-            //Ko break ở đây là để khi đăng xuất thì trang web tải lại phần slideshow     
+        //     break;   
 
         default:
          //   include("chuc_nang/slideshow/slideshow.php");

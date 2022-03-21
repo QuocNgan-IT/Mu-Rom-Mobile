@@ -53,6 +53,7 @@ function executeResult($sql) {
     $username = "root"; 		        //Khai báo username
     $password = "";      		        //Khai báo password
     $database = "kinhdoanhdienthoai";   //Khai báo database
+    $SITEURL = "http://localhost/MuRomMobile/";
 
     // Kết nối database
     $conn = new mysqli($server, $username, $password, $database);

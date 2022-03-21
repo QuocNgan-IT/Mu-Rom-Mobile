@@ -1,6 +1,6 @@
 <?php
-    include("ket_noi.php");
-    include("ham.php");
+    include("/xampp/htdocs/MuRomMobile/ket_noi.php");
+    include("/xampp/htdocs/MuRomMobile/ham.php");
 
     if( isset($_POST['login']) ) {
         $username = $_POST['username'];

@@ -166,12 +166,13 @@
                     echo "&nbsp;";
                     echo "<hr>";                    
                     echo "<br><br>";
-                    if( !isset($_SESSION['xac_dinh_dang_nhap']) or $_SESSION['xac_dinh_dang_nhap']=="khong" ) {
-                        echo "<div style='color: red'>Mời đăng nhập để thêm sản phẩm vào giỏ!</div>";
-                    }
-                    else {
-                        echo "<input type='submit' class='nut_submit' value='Thêm vào giỏ hàng' style='margin-left: 15px'>";
-                    }                    
+                    // if( !isset($_SESSION['xac_dinh_dang_nhap']) or $_SESSION['xac_dinh_dang_nhap']=="khong" ) {
+                    //     echo "<div style='color: red'>Mời đăng nhập để thêm sản phẩm vào giỏ!</div>";
+                    // }
+                    // else {
+                    //     echo "<input type='submit' class='nut_submit' value='Thêm vào giỏ hàng' style='margin-left: 15px'>";
+                    // } 
+                    echo "<button>Mua ngay</button>";                  
                 echo "</form>";
             echo "</td>";
         echo "</tr>";

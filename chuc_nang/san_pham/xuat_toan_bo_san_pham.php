@@ -1,6 +1,6 @@
 <?php
    //Tính toán số sản phẩm để hiển thị theo trang
-    $so_du_lieu = 15;
+    $so_du_lieu = 1; //15
     $sql = "select count(*)
             from dienthoai";
     $sql_1 = $conn->query($sql)->fetch_array();
@@ -69,7 +69,6 @@
                                         echo "<s>".$sql_2['GiaGoc']."vnđ</s><br>";
                                         echo $sql_2['GiaKhuyenMai']."vnđ";
                                     }
-                                    
                                 echo "</td>";
                             echo "</tr>";
                             echo "<tr>";
@@ -92,7 +91,7 @@
         //Cho thêm khoảng trống giữa các dòng
         echo "<tr>";
         for( $i=1;$i<=5;$i++ ) {
-            echo "<td style='border: none; font-size: smaller; color: gray' align=' center'>??? Shop</td>";
+            echo "<td style='border: none; font-size: smaller; color: gray' align=' center'>Mũ Rơm Mobile</td>";
         }
         echo "</tr>";
     }
@@ -109,4 +108,3 @@
             echo "</td>";
         echo "</tr>";
     echo "</table>";
-?>
