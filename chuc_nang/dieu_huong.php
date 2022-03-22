@@ -26,9 +26,9 @@
         // case "them_vao_gio":
         //     include("chuc_nang/gio_hang/them_vao_gio.php");
 
-        // case "gio_hang":
-        //     include("chuc_nang/gio_hang/gio_hang.php");
-        //     break;   
+        case "gio_hang":
+            include("chuc_nang/gio_hang/gio_hang.php");
+            break;   
 
         default:
          //   include("chuc_nang/slideshow/slideshow.php");

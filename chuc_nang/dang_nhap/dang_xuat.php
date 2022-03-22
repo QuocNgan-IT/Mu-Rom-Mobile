@@ -1,6 +1,6 @@
 <?php
-    include("/xampp/htdocs/KinhDoanhDienThoai/ket_noi.php");
-    include("/xampp/htdocs/KinhDoanhDienThoai/ham.php");    
+    include("/xampp/htdocs/MuRomMobile/ket_noi.php");
+    include("/xampp/htdocs/MuRomMobile/ham.php");   
 
     unset($_POST['login']);
     unset($_SESSION['xac_dinh_dang_nhap']);

@@ -36,7 +36,7 @@
                 echo "<img height='auto' width='100%' object-fit='fill' src='$link_anh'>";
                 echo "<div align='right'><br>Da ban: ".$sql_1['DaBan']."</div>";
             echo "</td>";
-            echo "<td class='chi_muc' height='80px'>";
+            echo "<td colspan='2' class='chi_muc' height='80px'>";
                 echo $sql_1['TenDT'];
             echo "</td>";
             echo "<td rowspan='5' width='30%'>";
@@ -133,7 +133,7 @@
             echo "</td>";
         echo "</tr>";
         echo "<tr>";
-            echo "<td class='chi_muc_bang_chi_tiet' height='50px'>";
+            echo "<td  colspan='2' class='chi_muc_bang_chi_tiet' height='50px'>";
                 if( $sql_1['GiaGoc'] == $sql_1['GiaKhuyenMai'] ) {
                     echo "<br>".$sql_1['GiaGoc']."vnđ";
                 } else {
@@ -143,41 +143,47 @@
             echo "</td>";
         echo "</tr>";
         echo "<tr>";
-            echo "<td>";
+            echo "<td colspan='2'>";
                 if( $sql_1['SoLuong']-$sql_1['DaBan'] > 0 ) {
                     echo "<div style='font-style: oblique; color: green'>Còn hàng!</div>";
                 }
             echo "</td>";
         echo "</tr>";
         echo "<tr>";
-            echo "<td class='chi_muc_bang_chi_tiet' height='auto' style='vertical-align: top'>";
+            echo "<td colspan='2' class='chi_muc_bang_chi_tiet' height='auto' style='vertical-align: top'>";
                 echo "<div><b>Mô tả</b></div>";
                 echo "<hr>";
                 echo $sql_1['MoTa'];
             echo "</td>";
         echo "</tr>";
-        echo "<tr>";
-            echo "<td class='chi_muc_bang_chi_tiet' height='150px'>";
-                echo "<form>";
-                    echo "<input type='hidden' name='thamso' value='them_vao_gio'>";
-                    echo "<input type='hidden' name='MaDT' value='".$_GET['MaDT']."'>";
-                    echo "<b>Chọn mua: </b>";
-                    echo "<input type='text' name='so_luong_mua' value='1' style='width: 40px'>";
-                    echo "&nbsp;";
-                    echo "<hr>";                    
-                    echo "<br><br>";
+        echo "<tr class='chi_muc_bang_chi_tiet'>";
+            echo "<td  height='150px'>";
+                echo "<form method='POST'>";
+                    
                     // if( !isset($_SESSION['xac_dinh_dang_nhap']) or $_SESSION['xac_dinh_dang_nhap']=="khong" ) {
                     //     echo "<div style='color: red'>Mời đăng nhập để thêm sản phẩm vào giỏ!</div>";
                     // }
                     // else {
                     //     echo "<input type='submit' class='nut_submit' value='Thêm vào giỏ hàng' style='margin-left: 15px'>";
                     // } 
-                    echo "<button>Mua ngay</button>";                  
+                    echo "<button type='submit'>Mua ngay</button>";                  
                 echo "</form>";
+            echo "</td>";
+            echo "<td>";
+                    echo "<form method='POST' action='them_vao_gio.php'>";
+                        echo "<input type='hidden' name='thamso' value='them_vao_gio'>";
+                        echo "<input type='hidden' name='MaDT' value='".$_GET['MaDT']."'>";
+                        echo "<b>Chọn mua: </b>";
+                        echo "<input type='text' name='so_luong_mua' value='1' style='width: 40px'>";
+                        echo "&nbsp;";
+                        echo "<hr>";                    
+                        echo "<br><br>";
+                        echo "<button type='submit'>Thêm vào giỏ hàng</button>";  
+                    echo "</form>";
             echo "</td>";
         echo "</tr>";
         echo "<tr>";
-            echo "<td colspan='2' class='chi_muc_bang_chi_tiet'>";
+            echo "<td colspan='3' class='chi_muc_bang_chi_tiet'>";
                 echo "<div class='chi_muc'>";
                     echo "Phần đánh giá & Bình luận";
                 echo "</div>";
@@ -190,11 +196,10 @@
             echo "</td>";
         echo "</tr>";
         echo "<tr>";
-            echo "<td colspan='3'>";
+            echo "<td colspan='4'>";
             if( isset($_SESSION['xac_dinh_dang_nhap']) and $_SESSION['xac_dinh_dang_nhap']=="co" ) {
                 echo "Sản phẩm vừa xem";
             }
             echo "</td>";
         echo "</tr>";
     echo "</table>";
-?>
