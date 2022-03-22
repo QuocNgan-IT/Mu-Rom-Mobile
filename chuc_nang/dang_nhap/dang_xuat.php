@@ -4,6 +4,6 @@
 
     unset($_POST['login']);
     unset($_SESSION['xac_dinh_dang_nhap']);
-    //$_SESSION['xac_dinh_dang_nhap'] = "khong";      
+    $_SESSION['xac_dinh_dang_nhap'] = "khong";      
     reload_parent();
 ?>

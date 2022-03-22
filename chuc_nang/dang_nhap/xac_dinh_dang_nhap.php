@@ -18,7 +18,7 @@
             reload_parent();
         }
         else {
-            //thong_bao_html("Thông tin nhập vào không đúng !");
+            thong_bao_html("Thông tin nhập vào không đúng !");
         }
     }
 ?>

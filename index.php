@@ -18,7 +18,6 @@
     <meta charset="utf-8">
     <title>Mũ Rơm Mobile</title>
     <link rel="stylesheet" type="text/css" href="giao_dien/giao_dien.css">
-
 </head>
 
 <body>
@@ -35,7 +34,8 @@
                 </a>
             </td>
             <td>
-                <?php include("chuc_nang/tim_kiem/thanh_tim_kiem.php"); ?>
+                <?php include("chuc_nang/tim_kiem/thanh_tim_kiem.php"); 
+                        echo $_SESSION['xac_dinh_dang_nhap'];?>
             </td>
             <td align="right">
                 <?php

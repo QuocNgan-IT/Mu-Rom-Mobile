@@ -1,5 +1,5 @@
 <?php
-   // $_SESSION['trang_chi_tiet_gio_hang'] = "co";
+    $_SESSION['trang_chi_tiet_gio_hang'] = "co";
     //Thêm sản phẩm vào sanphamvuaxem
 
     $ma_DT = $_GET['MaDT'];
@@ -159,18 +159,12 @@
         echo "<tr class='chi_muc_bang_chi_tiet'>";
             echo "<td  height='150px'>";
                 echo "<form method='POST'>";
-                    
-                    // if( !isset($_SESSION['xac_dinh_dang_nhap']) or $_SESSION['xac_dinh_dang_nhap']=="khong" ) {
-                    //     echo "<div style='color: red'>Mời đăng nhập để thêm sản phẩm vào giỏ!</div>";
-                    // }
-                    // else {
-                    //     echo "<input type='submit' class='nut_submit' value='Thêm vào giỏ hàng' style='margin-left: 15px'>";
-                    // } 
+
                     echo "<button type='submit'>Mua ngay</button>";                  
                 echo "</form>";
             echo "</td>";
             echo "<td>";
-                    echo "<form method='POST' action='them_vao_gio.php'>";
+                    echo "<form method='POST' action='".$SITEURL."chuc_nang/gio_hang/them_vao_gio.php'>";
                         echo "<input type='hidden' name='thamso' value='them_vao_gio'>";
                         echo "<input type='hidden' name='MaDT' value='".$_GET['MaDT']."'>";
                         echo "<b>Chọn mua: </b>";
