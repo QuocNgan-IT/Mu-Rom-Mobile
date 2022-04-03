@@ -60,7 +60,7 @@ $conn = new mysqli($server, $username, $password, $database);
 
 //Nếu kết nối bị lỗi thì xuất báo lỗi và thoát.
 if ($conn->connect_error) {
-    die("Kết nối CSDL thất bại!<br>--> " . $conn->connect_error);
+    die("Kết nối CSDL thất bại!<br>--> ".$conn->connect_error);
     exit();
 }
 //echo "Kết nối thành công!";

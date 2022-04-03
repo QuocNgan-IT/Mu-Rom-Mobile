@@ -34,15 +34,12 @@
                 </a>
             </td>
             <td>
-                <?php include("chuc_nang/tim_kiem/thanh_tim_kiem.php"); 
-                        echo $_SESSION['xac_dinh_dang_nhap'];?>
+                <?php include("chuc_nang/tim_kiem/thanh_tim_kiem.php"); ?>
             </td>
             <td align="right">
                 <?php
-                    // include("chuc_nang/tim_kiem/vung_tim_kiem.php");
                     if( !isset($_SESSION['xac_dinh_dang_nhap']) or $_SESSION['xac_dinh_dang_nhap']=="khong" ) {
                         echo "<input type=button onClick=window.open('chuc_nang/dang_nhap/dang_nhap.php'); value='Đăng nhập'>";
-                        //include("chuc_nang/dang_nhap/dang_nhap.php");
                     }
                     else {
                         if( $_SESSION['xac_dinh_dang_nhap']=="co" ) {
@@ -55,6 +52,7 @@
                 <?php
                     if( isset($_SESSION['xac_dinh_dang_nhap']) and $_SESSION['xac_dinh_dang_nhap']=="co" ) {
                         echo $_SESSION['username'];
+                        include("chuc_nang/gio_hang/vung_gio_hang.php");
                     }
                     else {
                         echo "<input type=button onClick=window.open('./chuc_nang/dang_ky/dang_ky.php'); value='Đăng ký'>";
@@ -90,8 +88,8 @@
             </td>
             <td width="auto" valign="top">
                 <?php
-                       include("chuc_nang/dieu_huong.php");
-                    ?>
+                    include("chuc_nang/dieu_huong.php");
+                ?>
             </td>
             <td width="10%" valign="top">
 

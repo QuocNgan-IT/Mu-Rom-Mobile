@@ -22,16 +22,20 @@
         case "tim_kiem":
             include("chuc_nang/tim_kiem/xuat_sp_tim_kiem.php");
             break;   
-            
-        // case "them_vao_gio":
-        //     include("chuc_nang/gio_hang/them_vao_gio.php");
 
         case "gio_hang":
             include("chuc_nang/gio_hang/gio_hang.php");
-            break;   
+            break;
+            
+        case "them_vao_gio":
+            include("chuc_nang/gio_hang/them_vao_gio.php");
+            break;
+
+        case "delete":
+            include("chuc_nang/gio_hang/xoa_khoi_gio.php");
+            break;
 
         default:
-         //   include("chuc_nang/slideshow/slideshow.php");
             include("san_pham/xuat_toan_bo_san_pham.php");
     }
 ?>

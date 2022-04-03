@@ -3,6 +3,7 @@
     //Thêm sản phẩm vào sanphamvuaxem
 
     $ma_DT = $_GET['MaDT'];
+    $tinh_trang_hang = "con hang";
 
     //MaDT,TenDT,GiaGoc,GiaKhuyenMai,MoTa,SoLuong,DaBan,MaHang
     $sql = "select *
@@ -135,17 +136,20 @@
         echo "<tr>";
             echo "<td  colspan='2' class='chi_muc_bang_chi_tiet' height='50px'>";
                 if( $sql_1['GiaGoc'] == $sql_1['GiaKhuyenMai'] ) {
-                    echo "<br>".$sql_1['GiaGoc']."vnđ";
+                    echo "<br>".number_format($sql_1['GiaGoc'], 0, '', ' ')."vnđ";
                 } else {
-                    echo "<s>".$sql_1['GiaGoc']."vnđ</s><br>";
-                    echo $sql_1['GiaKhuyenMai']."vnđ";
+                    echo "<s>".number_format($sql_1['GiaGoc'], 0, '', ' ')."vnđ</s><br>";
+                    echo number_format($sql_1['GiaKhuyenMai'], 0, '', ' ')."vnđ";
                 }
             echo "</td>";
         echo "</tr>";
         echo "<tr>";
             echo "<td colspan='2'>";
                 if( $sql_1['SoLuong']-$sql_1['DaBan'] > 0 ) {
-                    echo "<div style='font-style: oblique; color: green'>Còn hàng!</div>";
+                    echo "<div style='text-align: center; font-style: oblique; color: green;'>Còn hàng!</div>";
+                } else {
+                    echo "<div style='text-align: center; font-style: oblique; color: red;'>Hết hàng!</div>";
+                    $tinh_trang_hang = "het hang";
                 }
             echo "</td>";
         echo "</tr>";
@@ -156,26 +160,37 @@
                 echo $sql_1['MoTa'];
             echo "</td>";
         echo "</tr>";
-        echo "<tr class='chi_muc_bang_chi_tiet'>";
-            echo "<td  height='150px'>";
-                echo "<form method='POST'>";
 
-                    echo "<button type='submit'>Mua ngay</button>";                  
-                echo "</form>";
-            echo "</td>";
-            echo "<td>";
-                    echo "<form method='POST' action='".$SITEURL."chuc_nang/gio_hang/them_vao_gio.php'>";
-                        echo "<input type='hidden' name='thamso' value='them_vao_gio'>";
-                        echo "<input type='hidden' name='MaDT' value='".$_GET['MaDT']."'>";
-                        echo "<b>Chọn mua: </b>";
-                        echo "<input type='text' name='so_luong_mua' value='1' style='width: 40px'>";
-                        echo "&nbsp;";
-                        echo "<hr>";                    
-                        echo "<br><br>";
-                        echo "<button type='submit'>Thêm vào giỏ hàng</button>";  
+        if ($tinh_trang_hang=="het hang") {
+            echo "<tr>
+                <td>
+                    <div style='text-align: center; font-style: oblique; color: red;'>
+                        Sản phẩm đang tạm hết hàng, xin mời quay lại sau!
+                    </div>
+                </td>
+            </tr>";
+        } else {
+            echo "<tr class='chi_muc_bang_chi_tiet'>";
+                echo "<td>";
+                    echo "<form>";
+
+                        echo "<button type='submit'>Mua ngay</button>";                  
                     echo "</form>";
-            echo "</td>";
-        echo "</tr>";
+                echo "</td>";
+                echo "<td>";
+                    if (!isset($_SESSION['xac_dinh_dang_nhap']) or $_SESSION['xac_dinh_dang_nhap']=="khong") {
+                        echo "<button onClick=window.open('chuc_nang/dang_nhap/dang_nhap.php')>Thêm vào giỏ hàng</button>";
+                    } else {
+                        echo "<form>";
+                            echo "<input type='hidden' name='thamso' value='them_vao_gio'>";
+                            echo "<input type='hidden' name='MaDT_mua' value='".$ma_DT."'>";    
+                            echo "<button type='submit'>Thêm vào giỏ hàng</button>";  
+                        echo "</form>";
+                    } 
+                echo "</td>";
+            echo "</tr>";
+        }
+        
         echo "<tr>";
             echo "<td colspan='3' class='chi_muc_bang_chi_tiet'>";
                 echo "<div class='chi_muc'>";

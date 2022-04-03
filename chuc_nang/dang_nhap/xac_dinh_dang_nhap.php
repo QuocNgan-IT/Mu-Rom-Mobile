@@ -15,6 +15,7 @@
         if( $sql_2=$sql_1->fetch_array() ) {
             $_SESSION['xac_dinh_dang_nhap'] = "co";
             $_SESSION['username'] = $username;
+            $_SESSION['ma_KH'] = $sql_2['MaKH'];
             reload_parent();
         }
         else {

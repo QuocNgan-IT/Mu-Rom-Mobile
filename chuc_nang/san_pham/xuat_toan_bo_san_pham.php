@@ -64,10 +64,10 @@
                             echo "<tr>";
                                 echo "<td align='center'>";
                                     if( $sql_2['GiaGoc'] == $sql_2['GiaKhuyenMai'] ) {
-                                        echo "<br>".$sql_2['GiaGoc']."vnđ";
+                                        echo "<br>".number_format($sql_2['GiaGoc'], 0, '', ' ')."vnđ";
                                     } else {
-                                        echo "<s>".$sql_2['GiaGoc']."vnđ</s><br>";
-                                        echo $sql_2['GiaKhuyenMai']."vnđ";
+                                        echo "<s>".number_format($sql_2['GiaGoc'], 0, '', ' ')."vnđ</s><br>";
+                                        echo number_format($sql_2['GiaKhuyenMai'], 0, '', ' ')."vnđ";
                                     }
                                 echo "</td>";
                             echo "</tr>";
