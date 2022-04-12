@@ -21,7 +21,7 @@ if (isset($_SESSION['xac_dinh_dang_nhap']) and $_SESSION['xac_dinh_dang_nhap'] =
         var cf_pass = document.getElementById('confirm_password').value
         var regex = /([a-zA-Z])[a-zA-Z0-9]{5,}/
 
-        if ( pass == cf_pass && pass != '' && pass.match(regex) ) {
+        if (pass==cf_pass && pass!='' && pass.match(regex)) {
             document.getElementById('confirm_password').style.backgroundColor = '#00ff0080';
             // document.getElementById('message').innerHTML = 'matching';
         } else {
@@ -50,7 +50,7 @@ if (isset($_SESSION['xac_dinh_dang_nhap']) and $_SESSION['xac_dinh_dang_nhap'] =
             <td align="right">
                 <?php
         // include("chuc_nang/tim_kiem/vung_tim_kiem.php");
-        if (!isset($_SESSION['xac_dinh_dang_nhap']) or $_SESSION['xac_dinh_dang_nhap'] == "khong") {
+        if (!isset($_SESSION['xac_dinh_dang_nhap']) or $_SESSION['xac_dinh_dang_nhap']=="khong") {
           echo "<input type=button onClick=window.open('../dang_nhap/dang_nhap.php'); value='Đăng nhập'>";
           //include("chuc_nang/dang_nhap/dang_nhap.php");
         } else {
@@ -63,7 +63,7 @@ if (isset($_SESSION['xac_dinh_dang_nhap']) and $_SESSION['xac_dinh_dang_nhap'] =
         </tr>
     </table>
 
-    <form name="Form" method="" action="">
+    <form name="Form" method="POST" action="action_dang_ky.php">
         <table width="100%" height="auto"
             style="width: 100%; height: 50px; background: #F0C8C8; text-align: center; font-size: 35px; color: white;">
             <tr>
@@ -91,7 +91,7 @@ if (isset($_SESSION['xac_dinh_dang_nhap']) and $_SESSION['xac_dinh_dang_nhap'] =
                         <tr>
                             <td colspan="2">
                                 <input style="width: 100%;" type="password" id="password" name="password"
-                                    placeholder="Nhập mật khẩu" title="Tối thiểu 5 ký tự từ a-Z và 0-9, ký tự đầu tiên không phải số" onkeyup='check();' required>
+                                    placeholder="Nhập mật khẩu" pattern="^([a-zA-Z])[a-zA-Z0-9]{5,}" title="Tối thiểu 5 ký tự từ a-Z và 0-9, ký tự đầu tiên không phải số" onkeyup='check();' required>
                             </td>
                         </tr>
                         <tr>
@@ -110,14 +110,14 @@ if (isset($_SESSION['xac_dinh_dang_nhap']) and $_SESSION['xac_dinh_dang_nhap'] =
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <input style="width: 100%;" type="email" name="email" placeholder="Nhập địa chỉ email"
+                                <input style="width: 100%;" type="email" name="email" pattern="^[a-zA-Z0-9.]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$" placeholder="Nhập địa chỉ email"
                                     required>
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2">
                                 <input style="width: 100%;" type="text" name="phonenumber"
-                                    placeholder="Nhập số điện thoại" required>
+                                    placeholder="Nhập số điện thoại" title="Tối thiểu 10 chữ số" required>
                             </td>
                         </tr>
                         <tr>

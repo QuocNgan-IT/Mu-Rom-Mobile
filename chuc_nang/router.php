@@ -1,24 +1,16 @@
 <?php
-    if( isset($_GET['thamso']) ) {
-        $tham_so = $_GET['thamso'];
+    if( isset($_GET['route']) ) {
+        $route = $_GET['route'];
     }
     else {
-        $tham_so = "";
+        $route = "";
     }
 
-    switch( $tham_so ) {
-        // case "xuat_san_pham":
-        //     include("chuc_nang/san_pham/xuat_theo_danh_muc.php");
-        //     break;
-
+    switch($route) {
         case "chi_tiet_san_pham":
             include("san_pham/chi_tiet_san_pham.php");
             break;
-
-        // case "xuat_mot_tin":
-        //     include("chuc_nang/xuat_mot_tin.php");
-        //     break;
-          
+            
         case "tim_kiem":
             include("chuc_nang/tim_kiem/xuat_sp_tim_kiem.php");
             break;   
@@ -33,6 +25,10 @@
 
         case "delete":
             include("chuc_nang/gio_hang/xoa_khoi_gio.php");
+            break;
+
+        case "index":
+            header("location:$SITEURL");
             break;
 
         default:

@@ -88,7 +88,7 @@
             </td>
             <td width="auto" valign="top">
                 <?php
-                    include("chuc_nang/dieu_huong.php");
+                    include("chuc_nang/router.php");
                 ?>
             </td>
             <td width="10%" valign="top">

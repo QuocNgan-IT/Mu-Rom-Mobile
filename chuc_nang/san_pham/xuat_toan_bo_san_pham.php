@@ -29,7 +29,7 @@
             for( $i=1;$i<=5;$i++ ) {
                 echo "<td width='20%'>";
                     if( $sql_2!=false ) {
-                        //Lấy TenHinh ứng mới MaDT
+                        //Lấy TenHinh ứng với MaDT
                         $ma_DT = $sql_2['MaDT'];
                         $sql_3 = "select *
                             from anhdt
@@ -41,14 +41,14 @@
                         $sql_6 = $conn->query($sql_5)->fetch_array();
 
                         $link_anh = "hinh_anh/san_pham/".$sql_6['TenHinh'];
-                        $link_chi_tiet = "?thamso=chi_tiet_san_pham&MaDT=".$ma_DT;
+                        $link_chi_tiet = "?route=chi_tiet_san_pham&MaDT=".$ma_DT;
                         
 
                         //Màu mè tý :)
                         echo "<table border='1px' width='100%'>";
                             echo "<tr>";
                                 echo "<td height='400px' align='center'>";
-                                    echo "<a href='$link_chi_tiet' target='_blank'>";
+                                    echo "<a href='$link_chi_tiet'>";
                                         echo "<img width='100%'
                                         height='100%' object-fit='fill'; src='$link_anh'>";
                                     echo "</a>";
@@ -99,7 +99,7 @@
             echo "<td colspan='5' align='center'>";
                 echo "<div class='phan_trang'>";
                     for( $i=1;$i<=$so_trang;$i++ ) {
-                        $link = "?thamso=xuat_san_pham_2&trang=".$i;
+                        $link = "?route=xuat_san_pham_2&trang=".$i;
                         echo "<a href='$link'>";
                             echo $i; echo " ";
                         echo "</a>";

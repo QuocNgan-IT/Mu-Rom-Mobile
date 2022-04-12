@@ -5,19 +5,15 @@
         </td>
         <td width="30%" align="center">
             <?php
-                $so_luong = 0;
-
-                if (isset($_SESSION['MaDT_mua'])) {
-                   $so_luong = count($_SESSION['MaDT_mua']);  
-                }                    
-
-                echo $so_luong; 
+                if (isset($_SESSION['soSPMua'])) {
+                    echo $_SESSION['soSPMua']; 
+                }
             ?>
         </td>
     </tr>
     <tr>
         <td colspan="2" align="center">
-            <a href="?thamso=gio_hang"><input type="submit" class="nut_submit" value="Giỏ hàng"></a>
+            <a href="?route=gio_hang"><input type="submit" class="nut_submit" value="Giỏ hàng"></a>
         </td>
     </tr>
 </table>

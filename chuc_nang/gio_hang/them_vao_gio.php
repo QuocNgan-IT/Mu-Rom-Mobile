@@ -1,58 +1,58 @@
 <?php
-    if (isset($_GET['MaDT_mua']) and $_SESSION['trang_chi_tiet_gio_hang']=="co") {
-        $_SESSION['trang_chi_tiet_gio_hang'] = "huy_bo";
+    include("/xampp/htdocs/MuRomMobile/ket_noi.php");
+    include("/xampp/htdocs/MuRomMobile/ham.php");
+    include("/xampp/htdocs/MuRomMobile/temp.php");
+
+    if (isset($_POST['MaDT_mua'])) {
         $maKH = $_SESSION['ma_KH'];
-        if (isset($_SESSION['MaDT_mua'])) {
-            $so = count($_SESSION['MaDT_mua']);
-            $trung_lap = "khong";
+        $maDT_mua = $_POST['MaDT_mua'];
+        $soLuongMua = 1;
 
-            $sql = "select SoLuong, DaBan
+        $getSoLuong = "select SoLuong, DaBan
                     from dienthoai
-                    where MaDT=".$_GET['MaDT_mua'].";";
-            $sql_1 = $conn->query($sql)->fetch_array();
-            $hang_con = $sql_1['SoLuong'] - $sql_1['DaBan'];
+                    where MaDT='$maDT_mua';";
+            $arrSoLuong = $conn->query($getSoLuong)->fetch_array();
+            $hangCon = $arrSoLuong['SoLuong'] - $arrSoLuong['DaBan'];
 
-            for ($i=0; $i<$so; $i++) {
-                if ($_SESSION['MaDT_mua'][$i] == $_GET['MaDT_mua']) {
-                    $trung_lap = "co";
-                    $vi_tri_trung_lap = $i;
-                    break;
-                }
+        $getGioHang = $conn->query("select * from giohang where maKH='$maKH'");
+ 
+        if (mysqli_num_rows($getGioHang)>0) {
+            
+            $coTrongGio="";
+            while ($arrGioHang=$getGioHang->fetch_array()) {
+
+                //Nếu sp vừa thêm có trong giỏ hàng
+                if ($arrGioHang['MaDT']==$maDT_mua) {
+                    $coTrongGio="Yes";
+
+                    //Xử lý khi: số lượng mua trong giỏ + số lượng vừa thêm > số hàng còn trong kho
+                    if ($arrGioHang['SoLuongMua']+$soLuongMua > $hangCon) {
+                        NotificationAndGoback("Bạn đã thêm hết số lượng hàng còn lại của sản phẩm vào giỏ hàng, mời mở giỏ hàng và tiến hành thanh toán !");
+                        break;
+                    }else {
+                        $conn->query("update giohang set SoLuongMua=SoLuongMua+1 where MaKH='$maKH' and MaDT='$maDT_mua'");
+                        (new SQL)->reloadCartArea();
+
+                        //for dev only: Thông báo loại thêm nào được thực hiện
+                        NotificationAndGoback("Đã có trong giỏ, cập nhật!");
+                        break;
+                    }
+                } 
             }
-            if ($trung_lap == "khong") {
-                $maDT = $_SESSION['MaDT_mua'][$so] = $_GET['MaDT_mua'];
-                $SLmua = $_SESSION['SL_mua'][$so] = 1;
+            //Nếu sp vừa thêm ko có trong giỏ hàng
+            if ($coTrongGio!="Yes") {
+                $conn->query("insert into giohang value('$maKH','$maDT_mua','$soLuongMua');");
+                (new SQL)->reloadCartArea();
 
-                //MaKH,MaDT,SoLuongMua
-                $conn->query("insert
-                            into giohang
-                            value ('$maKH', '$maDT', '$SLmua')");
+                //for dev only: Thông báo loại thêm nào được thực hiện
+                NotificationAndGoback("Ko có trong giỏ, thêm mới!");
             }
-            if ($trung_lap == "co") {
-                //Xử lý khi số hàng trong giỏ + số lượng mua > hàng còn
-                if ($_SESSION['SL_mua'][$vi_tri_trung_lap] + 1 > $hang_con) {
-                    $_SESSION['SL_mua'][$vi_tri_trung_lap] = $hang_con;
-                    thong_bao_html("Bạn đã thêm hết số lượng hàng còn lại của sản phẩm vào giỏ hàng, mời mở giỏ hàng và tiến hành thanh toán !");
-                } else {
-                    $SLmua = $_SESSION['SL_mua'][$vi_tri_trung_lap] = $_SESSION['SL_mua'][$vi_tri_trung_lap] + 1;
-                    $maDT = $_SESSION['MaDT_mua']['$vi_tri_trung_lap'];
+        }else {
+            $conn->query("insert into giohang value('$maKH','$maDT_mua','$soLuongMua');");
+            (new SQL)->reloadCartArea();
 
-                    $conn->query("update giohang
-                                set SoLuongMua='$SLmua'
-                                where MaKH='$maKH' and MaDT='$maDT'");
-                }
-            }
-        } else {
-            $maDT = $_SESSION['MaDT_mua'][0] = $_GET['MaDT_mua'];
-            $SLmua = $_SESSION['SL_mua'][0] = 1;
-
-            //MaKH,MaDT,SoLuongMua
-            $conn->query("insert
-                into giohang
-                value ('$maKH', '$maDT', '$SLmua')");
+            //for dev only: Thông báo loại thêm nào được thực hiện
+            NotificationAndGoback("Chưa có giỏ, tạo giỏ và thêm mới!");
         }
-    } 
+    }else NotificationAndGoback("Ko thêm được!"); //for dev only: Thông báo loại thêm nào được thực hiện
 ?>
-<script type="text/javascript">
-    window.history.back();
-</script>

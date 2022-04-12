@@ -2,9 +2,9 @@
 include("./xac_dinh_dang_nhap.php");
 
 //Nếu đã đăng nhập thì khi load trang đăng nhập -> trang đăng nhập tự đóng
-if (isset($_SESSION['xac_dinh_dang_nhap']) and $_SESSION['xac_dinh_dang_nhap'] == "co") {
-  echo "<script>self.close()</script>";
-}
+// if (isset($_SESSION['xac_dinh_dang_nhap']) and $_SESSION['xac_dinh_dang_nhap'] == "co") {
+//   header("location:../../index.php");
+// }
 ?>
 <html>
 

@@ -26,15 +26,11 @@ function remove($i) {
     $_SESSION['gia_don_hang'][$i] = null;
 }
 
+$maKH = $_SESSION['ma_KH'];
+
 //Kiểm tra tình trạng giỏ hàng
-if (isset($_SESSION['MaDT_mua'])) {
-    $so_luong = 0;
-
-    for ($i = 0; $i < count($_SESSION['MaDT_mua']); $i++) {
-        $so_luong = $so_luong + 1;
-    }
-
-    if ($so_luong == 0) {
+if (isset($_SESSION['soSPMua'])) {
+    if ($_SESSION['soSPMua'] == 0) {
         $gio_hang = "khong";
     } else {
         $gio_hang = "co";
@@ -61,11 +57,65 @@ if ($gio_hang == "khong") {
                 echo "<td width='100px' class='chi_muc'>Thao tác</td>";
             echo "</tr>";
 
-    $tong_cong = 0;
-    if( $_SESSION['SL_mua']==null or $_SESSION['SL_mua']<=0 ) {
-        $_SESSION['SL_mua'] = 0;
+    $tongTien = 0;
+   
+    //Table dienthoai: MaDT,TenDT,GiaGoc,GiaKhuyenMai,MoTa,SoLuong,DaBan,MaHang
+    //Table giohang: MaKH,MaDT,SoLuongMua
+    $sql = "select * from dienthoai,giohang where dienthoai.MaDT=giohang.MaDT and giohang.MaKH='$maKH'";
+    $renderGioHang = $conn->query($sql);
+
+    while ($renderGioHangArr=$renderGioHang->fetch_array()) {
+
+        //Lấy thông tin điện thoại trong giỏ hàng
+        $maDT = $renderGioHangArr['MaDT'];
+        $tenDT = $renderGioHangArr['TenDT'];
+        $donGiaGoc = $renderGioHangArr['GiaGoc'];
+        $donGiaKM = $renderGioHangArr['GiaKhuyenMai'];
+        $slMua = $renderGioHangArr['SoLuongMua'];
+        $hangCon = $renderGioHangArr['SoLuong'] - $renderGioHangArr['DaBan'];
+        $tien = $donGiaKM * $slMua;
+        $tongTien+=$tien;
+
+        //Lấy ảnh điện thoại
+        //Table anhdt: MaDT,MaHinh
+        //Table hinhanh: MaHinh,TenHinh,SlideShow
+        $sql = $conn->query("select * from anhdt,hinhanh where anhdt.MaHinh=hinhanh.MaHinh and anhdt.MaDT='$maDT'")->fetch_array();
+        $tenAnhDT = $sql['TenHinh'];
+        $linkAnhDT = "hinh_anh/san_pham/" . $tenAnhDT;
+
+        //Render HTML
+        echo "<tr>";
+            echo "<td><img height='auto' width='100%' object-fit='fill' src='$linkAnhDT'></td>";
+            echo "<td>" . $tenDT . "</td>";
+            echo "<td style='text-align: right; padding-right: 5px;'>
+                    <s>" . number_format($donGiaGoc, 0, '', ' ') . " vnđ</s>
+                    <br>
+                    " . number_format($donGiaKM, 0, '', ' ') . " vnđ
+                </td>";
+            echo "<td>";
+                echo "<div align='center'>";
+                    //echo "<input type='hidden' name='" . $name_MaDT . "' value='" . $_SESSION['MaDT_mua'][$i] . "'>";
+                    echo "<div align='center'>
+                            <input class='minus is-form' type='button' value='-'>
+                            <input aria-label='quantity' class='input-qty' min=1 max='$hangCon' name='' type='number' value='$maDT'>
+                            <input class='plus  is-form' type='button' value='+'>
+                        </div>";
+                    //echo "<input type='text' style='width: 50%' id='CNSL' name='" . $name_SL . "' value='" . $_SESSION['SL_mua'][$i] . "'>";
+                    //echo "<input type='hidden' name='cap_nhat_gio_hang' value='co'>";
+                echo "</div>";
+            echo "</td>";
+            echo "<td style='text-align: right; padding-right: 5px'>" . number_format($tien, 0, '', ' ') . " vnđ </td>";
+
+        //$_SESSION['gia_don_hang'][$i] = $tien;
+
+            echo "<td align='center'>
+                    <button onClick=window.open('?route=delete&MaDT_xoa=$maDT')>Xóa</button>
+                </td>";
+        echo "</tr>";
     }
-    for ($i=0; $i<count($_SESSION['MaDT_mua']); $i++) {
+
+    
+    /*for ($i=0; $i<$_SESSION['soSPMua']; $i++) {
         //MaDT,TenDT,GiaGoc,GiaKhuyenMai,MoTa,SoLuong,DaBan,MaHang
         $sql = "select MaDT,TenDT,GiaGoc,GiaKhuyenMai,SoLuong,DaBan 
                 from dienthoai 
@@ -120,15 +170,15 @@ if ($gio_hang == "khong") {
                     </td>";
             echo "</tr>";
         }
-    }
+    }*/
             echo "<tr style='background-color: rgb(255, 150, 200); color: white;'>";
                 echo "<td colspan='3' align='right'>";
                     echo "<div ><strong>TỔNG GIÁ TRỊ ĐƠN HÀNG ==></strong></div>";
                 echo "</td>";
                 echo "<td colspan='2' align='center'>";
-                    echo $tong_cong . " VNĐ";
+                    echo $tongTien . " VNĐ";
 
-                $_SESSION['tong_gia_tri'] = $tong_cong;
+                $_SESSION['tongTien'] = $tongTien;
 
                 echo "</td>";
             echo "</tr>";

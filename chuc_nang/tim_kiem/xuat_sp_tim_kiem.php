@@ -62,7 +62,7 @@
                             $sql_6 = $conn->query($sql_5)->fetch_array();
 
                             $link_anh = "hinh_anh/san_pham/".$sql_6['TenHinh'];
-                            $link_chi_tiet = "?thamso=chi_tiet_san_pham&MaDT=".$ma_DT;
+                            $link_chi_tiet = "?route=chi_tiet_san_pham&MaDT=".$ma_DT;
                             
 
                             //Màu mè tý :)
@@ -121,7 +121,7 @@
                 echo "<td colspan='5' align='center'>";
                     echo "<div class='phan_trang'>";
                         for( $i=1;$i<=$so_trang;$i++ ) {
-                            $link = "?thamso=xuat_san_pham_2&trang=".$i;
+                            $link = "?route=xuat_san_pham_2&trang=".$i;
                             echo "<a href='$link'>";
                                 echo $i; echo " ";
                             echo "</a>";

@@ -1,5 +1,4 @@
 <?php
-    $_SESSION['trang_chi_tiet_gio_hang'] = "co";
     //Thêm sản phẩm vào sanphamvuaxem
 
     $ma_DT = $_GET['MaDT'];
@@ -181,8 +180,7 @@
                     if (!isset($_SESSION['xac_dinh_dang_nhap']) or $_SESSION['xac_dinh_dang_nhap']=="khong") {
                         echo "<button onClick=window.open('chuc_nang/dang_nhap/dang_nhap.php')>Thêm vào giỏ hàng</button>";
                     } else {
-                        echo "<form>";
-                            echo "<input type='hidden' name='thamso' value='them_vao_gio'>";
+                        echo "<form method='POST' action='$SITEURL/chuc_nang/gio_hang/them_vao_gio.php'>";
                             echo "<input type='hidden' name='MaDT_mua' value='".$ma_DT."'>";    
                             echo "<button type='submit'>Thêm vào giỏ hàng</button>";  
                         echo "</form>";
@@ -194,7 +192,7 @@
         echo "<tr>";
             echo "<td colspan='3' class='chi_muc_bang_chi_tiet'>";
                 echo "<div class='chi_muc'>";
-                    echo "Phần đánh giá & Bình luận";
+                    echo "Bình luận";
                 echo "</div>";
                 echo "<br><hr>";
                 echo "<p align='center'>Tính năng đang trong quá trình phát triển..</p>";
