@@ -2,11 +2,19 @@
     include("/xampp/htdocs/MuRomMobile/ket_noi.php");
 
     function reload_parent() {
-        echo "<script>
+        ?>
+            <script>
                 window.opener.location.reload(true);
                 self.close();
-            </script>";
-    exit();
+            </script>"
+        <?php
+    }
+    function reload_self() {
+        ?>
+            <script>
+                window.history.back();
+            </script>"
+        <?php
     }
     
     function Notification($notification_str) {
@@ -24,6 +32,13 @@
             </script>
         <?php
     }  
+    function Goback() {
+        ?>
+            <script type="text/javascript">
+                window.history.back();
+            </script>
+        <?php
+    } 
     function NotificationAndGoto($notification_str, $goto) {
         ?>
             <script type="text/javascript">

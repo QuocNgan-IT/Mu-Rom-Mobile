@@ -8,17 +8,18 @@
         $password = $_POST['password'];
 
         //Dùng like để so sánh tên tài khoản không phân biệt hoa thường
-        $sql = "select *
-                from khachhang
-                where Username like '$username' and Password='$password'";
-        $sql_1 = $conn->query($sql);
+        $sqlCheckLogin = $conn->query("select * from khachhang where Username like'$username' and Password='$password'");
 
-        if( $sql_2=$sql_1->fetch_array() ) {
+        if( $loginArr=$sqlCheckLogin->fetch_array() ) {
             $_SESSION['xac_dinh_dang_nhap'] = "co";
             $_SESSION['username'] = $username;
-            $_SESSION['ma_KH'] = $sql_2['MaKH'];
+            $_SESSION['maKH'] = $loginArr['MaKH'];
+            $_SESSION['tenKH'] = $loginArr['TenKH'];
             (new SQL)->reloadCartArea();
-            NotificationAndGoto("Đăng nhập thành công! Chào mừng ".$username."!", "$SITEURL");
+            //NotificationAndGoto("Đăng nhập thành công! Chào mừng ".$username."!", "$SITEURL");
+            //header("location:$SITEURL");
+            reload_parent();
+            //reload_self();
         }
         else {
             NotificationAndGoback("Thông tin nhập vào không đúng !");

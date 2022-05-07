@@ -27,6 +27,10 @@
             include("chuc_nang/gio_hang/xoa_khoi_gio.php");
             break;
 
+        case "changeSL":
+            include("chuc_nang/gio_hang/changeSL.php");
+            break;
+
         case "index":
             header("location:$SITEURL");
             break;
