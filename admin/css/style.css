@@ -329,6 +329,25 @@ li {
   color: var(--color-2);
 }
 
+/* Page */
+.page-item {
+  margin: 1rem 0;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  list-style-type: none;
+  color: var(--color-1);
+  border: 1px solid var(--color-1);
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 750ms;
+}
+
+.page-item.active,
+.page-item:hover {
+  background-color: var(--color-1);
+  color: var(--color-2);
+}
+
 /* Content */
 .content {
   padding-bottom: 15px;

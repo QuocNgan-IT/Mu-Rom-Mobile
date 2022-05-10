@@ -2,7 +2,42 @@
 include "connect.php";
 session_start();
 
-$sql = "SELECT * FROM `hangsx`";
+//Tính toán số dữ liệu để hiển thị theo trang
+$numOfData = 5; //Số dữ liệu hiển thị trong 1 trang
+$sql = "select count(*) from hangsx";
+$sql_1 = $conn->query($sql)->fetch_array();
+$numOfPages = ceil($sql_1[0]/$numOfData);
+
+if (!isset($_GET['page'])) {
+    //Vị trí bắt đầu
+    $vtbd = 0;
+} else {
+    $vtbd = ($_GET['page']-1) * $numOfData;
+}
+?>
+<!-- Phân trang -->
+<script>
+  $(".page-item").click(function(e) {
+    e.preventDefault();
+
+    var Page = $(this).attr("Page");
+    
+    $.get("hangsx.php", {
+      page: Page,
+      pagination: true
+    }, function(data) {
+      $("#content").html(data);
+      $(".page-item").removeClass("active");
+      $(this).toggleClass("active");
+    });
+  });
+</script>
+<!--  -->
+
+<?php
+//
+
+$sql = "SELECT * FROM `hangsx` LIMIT $vtbd,$numOfData";
 
 if (isset($_GET['search']) && isset($_GET['key'])) {
   $key = $_GET['key'];
@@ -21,14 +56,15 @@ $result = mysqli_query($conn, $sql);
     $(".name").keyup(function(e) {
       var value = $(this).val();
       if (value.length == 0 || value.length > 25) {
-        if (value.length == 0) $(".error_name").text("*Vui lòng nhập tên sản phẩm!");
-        if (value.length > 25) $(".error_name").text("*Tên sản phẩm không được quá 25 ký tự");
+        if (value.length == 0) $(".error_name").text("*Vui lòng nhập tên hãng!");
+        if (value.length > 25) $(".error_name").text("*Tên hãng không được quá 25 ký tự");
         check_name = false;
       } else {
         $(".error_name").text("");
         check_name = true;
       }
     });
+
     // Them hangsx
     $("#add-hangsx").click(function(e) {
       check_name = false;
@@ -97,8 +133,7 @@ $result = mysqli_query($conn, $sql);
       $.get("action.php", {
           MaHang: MaHang,
           xoa_hangsx: true
-        },
-        function(data) {
+        }, function(data) {
           $("#content").load("hangsx.php");
         }
       );
@@ -160,7 +195,7 @@ $result = mysqli_query($conn, $sql);
       <table class="table">
         <thead>
           <tr>
-            <!-- <th scope="col">ảnh hãng</th> -->
+            <!-- <th scope="col"></th> -->
             <th scope="col">Mã hãng</th>
             <th scope="col">Tên hãng</th>
             <th scope="col">Tùy chọn</th>
@@ -169,6 +204,9 @@ $result = mysqli_query($conn, $sql);
         <tbody>
           <?php foreach ($result as $key) : ?>
             <tr>
+              <!-- <td scope="row">
+                <img src="../Images/Hangdienthoai/<?php //echo $key['anh_hangsx'] ?>">
+              </td> -->
               <td scope="row"><?php echo $key['MaHang'] ?></td>
               <td><?php echo $key['TenHang'] ?></td>
               <td>
@@ -183,6 +221,17 @@ $result = mysqli_query($conn, $sql);
           <?php endforeach; ?>
         </tbody>
       </table>
+
+      <!-- Phân trang -->      
+        <ul class="pagination">
+          <li class="page-item active" Page="1">1</li>
+          <?php for ($i=2; $i<=$numOfPages; $i++) { ?>     
+              <li class="page-item" Page="<?php echo $i ?>">
+                <?php echo $i ?>
+              </li>
+          <?php } ?>
+        </ul> 
+
       <div class="row justify-content-end">
         <span class="icon-add" id="add-hangsx">
           Thêm <i class="fas fa-plus"></i>

@@ -2,118 +2,71 @@
 include "connect.php";
 session_start();
 
-$sql_category = "SELECT * FROM `hangsx`";
-$sql = "SELECT * FROM `dienthoai`,`hangsx` WHERE dienthoai.MaHang=hangsx.MaHang";
+//Tính toán số dữ liệu để hiển thị theo trang
+$numOfData = 15; //Số dữ liệu hiển thị trong 1 trang
+$sql = "select count(*) from dienthoai";
+$sql_1 = $conn->query($sql)->fetch_array();
+$numOfPages = ceil($sql_1[0]/$numOfData);
+
+if (!isset($_GET['page'])) {
+    //Vị trí bắt đầu
+    $vtbd = 0;
+} else {
+    $vtbd = ($_GET['page']-1) * $numOfData;
+}
+
+$sql_hangsx = "SELECT * FROM `hangsx`";
+$sql = "SELECT * FROM `dienthoai`,`hangsx` WHERE `dienthoai`.MaHang=`hangsx`.MaHang LIMIT $vtbd,$numOfData";
 
 if (isset($_GET['search']) && isset($_GET['key'])) {
   $key = $_GET['key'];
-  $sql = "SELECT * FROM `dienthoai`,`hangsx` WHERE dienthoai.MaHang=hangsx.MaHang AND TenDT LIKE '%$key%'";
+  $sql = "SELECT * FROM `dienthoai`,`hangsx` WHERE `dienthoai`.MaHang=`hangsx`.MaHang  AND `dienthoai`.TenDT LIKE '%$key%' LIMIT $vtbd,$numOfData";
 }
 
-
-$result_category = mysqli_query($conn, $sql_category);
+$result_hangsx = mysqli_query($conn, $sql_hangsx);
 $result = mysqli_query($conn, $sql);
-
 ?>
 
 <script src="bootstrap/jquery-3.5.1.min.js"></script>
+
 <script>
   $(document).ready(function() {
-    // Validate
-    var check_name = true; //form edit
-    var check_rule = true; //form edit
-    var check_description = true; //form add address
-    // Name
-    $(".name").keyup(function(e) {
-      var value = $(this).val();
-      if (value.length == 0 || value.length > 25) {
-        if (value.length == 0) $(".error_name").text("*Vui lòng nhập tên sản phẩm!");
-        if (value.length > 25) $(".error_name").text("*Tên sản phẩm không được quá 25 ký tự");
-        check_name = false;
-      } else {
-        $(".error_name").text("");
-        check_name = true;
-      }
-    });
+    // Pagination
+    $(".page-item").click(function(e) {
+      e.preventDefault();
 
-    // Rule
-    $(".rule").keyup(function(e) {
-      var value = $(this).val();
-      if (value.length == 0 || value.length > 25) {
-        if (value.length == 0) $(".error_rule").text("*Vui lòng nhập quy cách sản phẩm!");
-        if (value.length > 0) $(".error_rule").text("*Quy cách không quá 25 ký tự!");
-        check_rule = false;
+      var Page = $(this).attr("Page");
 
-      } else {
-        $(".error_rule").text("");
-        check_rule = true;
+      $.get("dienthoai.php", {
+        page: Page,
+        pagination: true
+      }, function(data) {
+        $("#content").html(data);
+      });
 
-      }
-    });
-
-    // Description
-    $(".description").keyup(function(e) {
-      var value = $(this).val();
-
-      if (value.length > 100) {
-        if (value.length > 100) $(".error_description").text("*Mô tả quá dài  !");
-        check_description = false;
-
-      } else {
-        $(".error_description").text("");
-        check_description = true;
-
-      }
+      $(".page-item").click(function() {
+        $(".page-item").removeClass("active");
+        $(this).toggleClass("active");
+      });
     });
 
     // Thêm sản phẩm mới
-    $("#add-product").click(function(e) {
+    $("#them-dienthoai").click(function(e) {
       check_name = false;
       check_rule = false;
 
-      $(".form-add").show(500);
-      $(".form-layout").show();
+      $("#content").load("form-themDT.php");
     });
 
-    $("#add-save").click(function(e) {
-      e.preventDefault();
-      if (check_name && check_rule && check_description) {
+    // Sửa thông tin điện thoại
+    $(".sua-dienthoai").click(function() {
+      var MaDT = $(this).attr("MaDT");
 
-        const name = $("#name-add").val(); //Tên hàng hóa
-        const rule = $("#rule-add").val(); //Quy cách
-        const quantity = $("#quantity-add").val(); //Số lượng
-        const price = $("#price-add").val(); //Giá
-        const category = $("#category-add").val(); //Loại hàng 
-        const description = $("#description-add").val(); //Ghi chú
-
-        $.get("action.php", {
-
-          name: name,
-          rule: rule,
-          quantity: quantity,
-          price: price,
-          category: category,
-          description: description,
-          sub_add_product: true
-
+      $.post("form-suaDT.php", {
+          MaDT: MaDT,
+          sua_dienthoai: true
         }, function() {
-          $("#content").load("product.php");
-        });
-      } else return false;
-    });
-
-    // Chỉnh sửa sản phẩm
-    $(".edit-product").click(function() {
-      var MSHH = $(this).attr("MSHH");
-
-      $.post("product.php", {
-          id: MSHH,
-          edit_product: true
-        },
-        function(data) {
-          $("#content").html(data);
-          $(".form-edit").show(500);
-          $(".form-layout").show();
+          $("#content").load("form-suaDT.php");
         }
       );
     });
@@ -122,7 +75,6 @@ $result = mysqli_query($conn, $sql);
       e.preventDefault();
 
       if (check_name && check_rule && check_description) {
-
         const MSHH = $("#MSHH").val(); //Mã hàng hóa
         const name = $("#name").val(); //Tên hàng hóa
         const rule = $("#rule").val(); //Quy cách
@@ -132,7 +84,6 @@ $result = mysqli_query($conn, $sql);
         const description = $("#description").val(); //Ghi chú
 
         $.get("action.php", {
-
           MSHH: MSHH,
           name: name,
           rule: rule,
@@ -149,23 +100,21 @@ $result = mysqli_query($conn, $sql);
     });
 
     // Xóa sản phẩm
-    $(".delete-product").click(function() {
-      var MSHH = $(this).attr("MSHH");
+    $(".xoa-dienthoai").click(function() {
+      var MaDT = $(this).attr("MaDT");
 
       $.get("action.php", {
-          MSHH: MSHH,
-          sub_del_product: true
+          MaDT: MaDT,
+          xoa_dienthoai: true
         },
         function() {
-          $("#content").load("product.php");
+          $("#content").load("dienthoai.php");
         }
       );
-
     });
 
     // Close
     $(".icon-close").click(function() {
-
       $(".form").hide(500);
       $(".form-layout").hide();
     });
@@ -176,14 +125,12 @@ $result = mysqli_query($conn, $sql);
 
       var key = $("#search").val();
 
-
-      $.get("product.php", {
+      $.get("dienthoai.php", {
         key: key,
         search: true
       }, function(data) {
         $("#content").html(data);
       });
-
     });
 
     // Mess
@@ -208,7 +155,7 @@ $result = mysqli_query($conn, $sql);
       <div class="row align-items-center justify-content-end">
         <div class="col-3">
           <form action="">
-            <input type="text" name="" id="search" class="form-input" placeholder="Search" />
+            <input type="text" name="" id="search" class="form-input" placeholder="Search"/>
             <button type="submit" class="form-search" id="form-search">
               <i class="fas fa-search"></i>
             </button>
@@ -217,14 +164,15 @@ $result = mysqli_query($conn, $sql);
       </div>
       <table class="table">
         <thead>
-          <tr>
+          <tr>            
             <th scope="col">Mã DT</th>
+            <th scope="col"></th>
             <th scope="col">Tên điện thoại</th>
             <th scope="col">Giá gốc</th>
             <th scope="col">Giá KM</th>
             <!-- <th scope="col">TTKM</th> -->
             <th scope="col">Loại KM</th>
-            <th scope="col">Mô tả</th>
+            <!-- <th scope="col">Mô tả</th> -->
             <!-- <th scope="col">Số lượng</th> -->
             <th scope="col">Đã bán</th>
             <th scope="col">Hãng Sx</th>
@@ -235,20 +183,27 @@ $result = mysqli_query($conn, $sql);
           <?php foreach ($result as $key) : ?>
             <tr>
               <th scope="row"><?php echo $key['MaDT'] ?></th>
+              <td>
+                <?php 
+                  $sql_hinhanh = mysqli_query($conn, "SELECT TenHinh FROM `hinhanh` WHERE MaDT='" . $key['MaDT'] . "' AND `hinhanh`.Hinh_index='1'"); 
+                  $result_hinhanh = mysqli_fetch_array($sql_hinhanh);
+                ?>
+                <img center width="70px" height="100px" src="../Images/AnhDT/<?php echo $result_hinhanh[0] ?>">
+              </td>
               <td><?php echo $key['TenDT'] ?></td>
-              <td><?php echo $key['GiaGoc'] ?></td>
-              <td><?php echo $key['GiaKhuyenMai'] ?></td>
+              <td><?php echo number_format($key['GiaGoc'], 0, '', '.') ?></td>
+              <td><?php echo number_format($key['GiaKhuyenMai'], 0, '', '.') ?></td>
               <!-- <td><?php echo $key['TrangThaiKM'] ?></td> -->
               <td><?php echo $key['TenTTKM'] ?></td>
-              <td><?php echo $key['MoTa'] ?></td>
+              <!-- <td><?php echo $key['MoTa'] ?></td> -->
               <!-- <td><?php echo $key['SoLuong'] ?></td> -->
               <td><?php echo $key['DaBan'] ."/". $key['SoLuong'] ?></td>
               <td><?php echo $key['TenHang'] ?></td>
               <td>
-                <span class="edit-product" MaDT="<?php echo $key['MaDT'] ?>">
+                <span class="sua-dienthoai" MaDT="<?php echo $key['MaDT'] ?>">
                   <i class="far fa-edit form-icon"></i>
                 </span>
-                <span class="delete-product" MaDT="<?php echo $key['MaDT'] ?>">
+                <span class="xoa-dienthoai" MaDT="<?php echo $key['MaDT'] ?>">
                   <i class="far fa-trash-alt form-icon"></i>
                 </span>
               </td>
@@ -256,73 +211,23 @@ $result = mysqli_query($conn, $sql);
           <?php endforeach; ?>
         </tbody>
       </table>
+
+      <!-- Phân trang: active ko dùng được -->      
+      <div class="pagination">
+          <li class="page-item active" Page="1">1
+          </li>
+          <?php for ($i=2; $i<=$numOfPages; $i++) { ?>     
+              <li class="page-item" Page="<?php echo $i ?>"><?php echo $i ?>
+              </li>
+          <?php } ?>
+        </div> 
+
       <div class="row justify-content-end">
-        <span class="icon-add" id="add-product">
+        <span class="icon-add" id="them-dienthoai">
           Thêm <i class="fas fa-plus"></i>
         </span>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- Form thêm điện thoại -->
-<div class="form-layout"></div>
-<div class="form form-add">
-  <div class="col">
-    <div class="row justify-content-end">
-      <i class="fas fa-times icon-close" id="icon-close"></i>
-    </div>
-    <div class="row">
-      <span class="form-title">THÊM ĐIỆN THOẠI</span>
-    </div>
-    <form action="">
-      <div class="row form-item align-items-center">
-        <input class="form-input name" type="text" name="name" id="name-add" placeholder="Tên điện thoại" value="" />
-      </div>
-      <div class="row error error_name"></div>
-
-      <div class="row form-item align-items-center">
-        <input class="form-input rule" type="text" name="rule" id="rule-add" placeholder="Quy cách" value="" />
-      </div>
-      <div class="row error error_rule"></div>
-
-      <div class="row form-item">
-        <div class="col-3">
-          <label for="quantity" class="form-lable">Số lượng: </label>
-        </div>
-        <div class="col-3">
-          <input type="number" name="quantity" id="quantity-add" min="0" value="1" />
-        </div>
-        <div class="col-2">
-          <label for="price" class="form-lable">Giá: </label>
-        </div>
-        <div class="col-4">
-          <input type="number" name="price" id="price-add" min="0" value="0" />
-        </div>
-      </div>
-      <div class="row form-item justify-content-between">
-        <div class="col-3">
-          <label for="category" class="form-lable">Hãng SX:</label>
-        </div>
-        <div class="col-6">
-          <select class="form-input" id="category-add" name="category">
-            <?php foreach ($result_category as $key) : ?>
-              <option value="<?php echo $key['MaHang'] ?>"><?php echo $key['TenHang'] ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-      </div>
-      <div class="row form-item align-items-center">
-        <textarea class="description" id="description-add" placeholder="Mô tả" rows="3"></textarea>
-      </div>
-      <div class="row error error_description"></div>
-
-      <div class="row justify-content-center">
-        <div class="col-md-7">
-          <button type="submit" class="form-submit" id="add-save">Thêm mới</button>
-        </div>
-      </div>
-    </form>
   </div>
 </div>
 
@@ -333,7 +238,6 @@ if (isset($_POST['edit_product']) && isset($_POST['id'])) {
   $sql = "SELECT * FROM `hanghoa` WHERE MSHH = '$id'";
   $temp = mysqli_query($conn, $sql);
   $data = mysqli_fetch_assoc($temp);
-
 ?>
 
 <!-- Form sửa điện thoại -->
@@ -375,7 +279,7 @@ if (isset($_POST['edit_product']) && isset($_POST['id'])) {
         </div>
         <div class="col-6">
           <select class="form-input" id="category-id" name="category">
-            <?php foreach ($result_category as $key) : ?>
+            <?php foreach ($result_hangsx as $key) : ?>
               <option <?php if ($data['MaLoaiHang'] == $key['MaLoaiHang']) echo "selected=\"selected\""; ?> value="<?php echo $key['MaLoaiHang'] ?>"><?php echo $key['TenLoaiHang'] ?></option>
             <?php endforeach; ?>
           </select>

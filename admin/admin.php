@@ -30,6 +30,7 @@ session_start();
         <li class="menu-item" id="personnel">Nhân viên</li>
         <li class="menu-item" id="hangsx">Hãng điện thoại</li>
         <li class="menu-item" id="dienthoai">Điện thoại</li>
+        <!-- <li class="menu-item" id="test">Test sửa điện thoại</li> -->
       </div>
       <div class="col-10 content">
         <div class="row user justify-content-between align-items-center">
@@ -78,6 +79,10 @@ session_start();
       $("#dienthoai").click(function(e) {
         $("#content").load("dienthoai.php");
       });
+
+      // $("#test").click(function(e) {
+      //   $("#content").load("form-themDT.php");
+      // });
 
       $(".menu-item").click(function() {
         $(".menu-item").removeClass("active");

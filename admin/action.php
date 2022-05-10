@@ -77,7 +77,6 @@ if (isset($_GET['sub_add_order']) && isset($_SESSION['cart_product']) && isset($
 
 // Customer
 // // Add Customer
-
 if (isset($_GET['sub_add_customer'])) {
     $name = $_GET['name'];
     $company = $_GET['company'];
@@ -220,10 +219,10 @@ if (isset($_GET['sub_del_personnel']) && isset($_GET['MSNV'])) {
 }
 
 
-// Category
+// Hang san xuat dien thoai
 // // Them hangsx
 if (isset($_GET['them_hangsx'])) {
-    $name = $_GET['name'];
+    $name = $_GET['name']; 
 
     $sql_add = "INSERT INTO `hangsx` (`TenHang`,`anh_hangsx`) VALUES ('$name','null')";
     mysqli_query($conn, $sql_add);
@@ -231,7 +230,7 @@ if (isset($_GET['them_hangsx'])) {
     $_SESSION['mess'] = "Thêm hãng điện thoại thành công";
 }
 
-// // Edit Category
+// // Sua hangsx
 if (isset($_GET['sua_hangsx']) && isset($_GET['MaHang'])) {
     $name = $_GET['name'];
     $MaHang = $_GET['MaHang'];
@@ -253,9 +252,24 @@ if (isset($_GET['xoa_hangsx']) && isset($_GET['MaHang'])) {
 }
 
 // Product
+// // // Thêm điện thoại
+// if (isset($_GET['sub_add_product'])) {
+//     $name = $_GET['name'];
+//     $rule = $_GET['rule'];
+//     $quantity = $_GET['quantity'];
+//     $price = $_GET['price'];
+//     $category = $_GET['category'];
+//     $description = $_GET['description'];
+
+//     $sql_list_product_add = "INSERT INTO `hanghoa` (`MSHH`, `TenHH`, `QuyCach`, `Gia`, `SoLuongHang`, `MaLoaiHang`, `GhiChu`) 
+//     VALUES (NULL, '$name', '$rule', '$price', '$quantity', '$category', '$description')";
+//     mysqli_query($conn, $sql_list_product_add);
+
+//     $_SESSION['mess'] = "Thêm sản phẩm thành công";
+// }
+
 // // Edit Product
 if (isset($_GET['sub_edit_product']) && isset($_GET['MSHH'])) {
-
     $MSHH = $_GET['MSHH'];
     $name = $_GET['name'];
     $rule = $_GET['rule'];
@@ -278,29 +292,29 @@ if (isset($_GET['sub_edit_product']) && isset($_GET['MSHH'])) {
     $_SESSION['mess'] = "Chỉnh sửa sản phẩm thành công";
 }
 
-// // Add Product
-
-if (isset($_GET['sub_add_product'])) {
-    $name = $_GET['name'];
-    $rule = $_GET['rule'];
-    $quantity = $_GET['quantity'];
-    $price = $_GET['price'];
-    $category = $_GET['category'];
-    $description = $_GET['description'];
-
-    $sql_list_product_add = "INSERT INTO `hanghoa` (`MSHH`, `TenHH`, `QuyCach`, `Gia`, `SoLuongHang`, `MaLoaiHang`, `GhiChu`) 
-    VALUES (NULL, '$name', '$rule', '$price', '$quantity', '$category', '$description')";
-    mysqli_query($conn, $sql_list_product_add);
-
-    $_SESSION['mess'] = "Thêm sản phẩm thành công";
-}
-
-// // Delete Product
-if (isset($_GET['sub_del_product']) && isset($_GET['MSHH'])) {
-    $MSHH = $_GET['MSHH'];
+// // Xóa điện thoại
+if (isset($_GET['xoa_dienthoai']) && isset($_GET['MaDT'])) {
+    $MaDT = $_GET['MaDT'];
 
     $sql_list_product_delete = "DELETE FROM `hanghoa` WHERE `hanghoa`.`MSHH` = '$MSHH'";
     mysqli_query($conn, $sql_list_product_delete);
+
+    //Xoa hinhanh -> xoa cauhinhdt -> xoa dienthoai
+    // // xoa hinhanh
+    $sqlGetImage = mysqli_query($conn, "SELECT * FROM `hinhanh` WHERE `hinhanh`.MaDT='$MaDT'");
+    while ($getImageArr = mysqli_fetch_array($sqlGetImage)) {
+        $path = "../Images/AnhDT/" . $getImageArr['TenHinh'];
+        if (file_exists($path)) {
+            unlink($path);
+        }
+    }
+    mysqli_query($conn, "DELETE FROM `hinhanh` WHERE `hinhanh`.MaDT='$MaDT'");
+
+    // // xoa cauhinhdt
+    mysqli_query($conn, "DELETE FROM `cauhinhdt` WHERE `cauhinhdt`.MaDT='$MaDT'");
+
+    // // xoa dienthoai
+    mysqli_query($conn, "DELETE FROM `dienthoai` WHERE `dienthoai`.MaDT='$MaDT'");
 
     $_SESSION['mess'] = "Xóa sản phẩm thành công";
 }
