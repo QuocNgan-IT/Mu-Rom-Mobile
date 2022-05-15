@@ -1,17 +1,18 @@
 <?php
     $maKH = $_SESSION['maKH'];
 
+    //Table dienthoai: MaDT,TenDT,GiaGoc,GiaKhuyenMai,MoTa,SoLuong,DaBan,MaHang
+        //Table giohang: MaKH,MaDT,SoLuongMua
+        $sql = "select * from dienthoai,giohang where dienthoai.MaDT=giohang.MaDT and giohang.MaKH='$maKH'";
+        $renderGioHang = $conn->query($sql);
+
     //Kiểm tra tình trạng giỏ hàng
-    if (isset($_SESSION['soSPMua'])) {
-        if ($_SESSION['soSPMua']==0) {
-            $gioHang = "khong";
-        } else {
+    if (mysqli_num_rows($renderGioHang)!=0) {
             $gioHang = "co";
-        }
     } else {
         $gioHang = "khong";
     }
-    //
+    
 
     echo "<div class='chi_muc'>Giỏ hàng</div>";
     echo "<br>";
@@ -31,10 +32,7 @@
 
         $tongTien = 0;
     
-        //Table dienthoai: MaDT,TenDT,GiaGoc,GiaKhuyenMai,MoTa,SoLuong,DaBan,MaHang
-        //Table giohang: MaKH,MaDT,SoLuongMua
-        $sql = "select * from dienthoai,giohang where dienthoai.MaDT=giohang.MaDT and giohang.MaKH='$maKH'";
-        $renderGioHang = $conn->query($sql);
+        
 
         $i = 0; //Biến xác định số sp trong giỏ, giúp lưu vào Session
         while ($renderGioHangArr=$renderGioHang->fetch_array()) {

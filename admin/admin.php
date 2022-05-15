@@ -24,9 +24,9 @@ session_start();
       <div class="col-2 menu">
         <h4 class="menu-title">ADMIN</h4>
         <hr />
-        <li class="menu-item active" id="revenue">Thống kê</li>
-        <li class="menu-item" id="order">Đơn hàng</li>
-        <li class="menu-item" id="customer">Khách hàng</li>
+        <li class="menu-item active" id="thongke">Thống kê</li>
+        <li class="menu-item" id="donhang">Đơn hàng</li>
+        <li class="menu-item" id="khachhang">Khách hàng</li>
         <li class="menu-item" id="personnel">Nhân viên</li>
         <li class="menu-item" id="hangsx">Hãng điện thoại</li>
         <li class="menu-item" id="dienthoai">Điện thoại</li>
@@ -53,19 +53,19 @@ session_start();
   <script src="bootstrap/js/bootstrap.min.js"></script>
   <script>
     $(document).ready(function() {
-      $("#content").load("revenue.php");
+      $("#content").load("thongke.php");
       // Menu Click
 
-      $("#revenue").click(function(e) {
-        $("#content").load("revenue.php");
+      $("#thongke").click(function(e) {
+        $("#content").load("thongke.php");
       });
 
-      $("#order").click(function(e) {
-        $("#content").load("order.php");
+      $("#donhang").click(function(e) {
+        $("#content").load("donhang.php");
       });
 
-      $("#customer").click(function(e) {
-        $("#content").load("customer.php");
+      $("#khachhang").click(function(e) {
+        $("#content").load("khachhang.php");
       });
 
       $("#personnel").click(function(e) {

@@ -100,48 +100,6 @@ $result = mysqli_query($conn, $sql);
             }
         });
 
-        // Add Customer
-        $("#add-customer").click(function(e) {
-            check_name = false;
-            check_company = false;
-            check_n_phone = false;
-            check_email = false;
-            check_address = false;
-
-            $(".form-add").show(500);
-            $(".form-layout").show();
-        });
-
-        $("#form-add-customer").submit(function(e) {
-            $("#content").load("customer.php");
-        });
-
-        $("#save-add").click(function(e) {
-            e.preventDefault();
-            if (check_name && check_company && check_n_phone && check_email && check_address) {
-                const name = $("#name-add").val(); //Mã khách hàng
-                const company = $("#company-add").val(); //Mã khách hàng
-                const n_phone = $("#n_phone-add").val(); //Mã khách hàng
-                const email = $("#email-add").val(); //Mã khách hàng
-                const address = $("#address-add").val(); //Mã khách hàng
-
-                $.get("action.php", {
-
-                    name: name,
-                    company: company,
-                    n_phone: n_phone,
-                    email: email,
-                    address: address,
-                    sub_add_customer: true
-
-                }, function() {
-                    $("#content").load("customer.php");
-                });
-            } else return false;
-
-
-        });
-
         // Edit Customer
         $(".edit-customer").click(function() {
             var MSKH = $(this).attr("MSKH");
@@ -310,7 +268,6 @@ $result = mysqli_query($conn, $sql);
                     <tr>
                         <th scope="col">Mã KH</th>
                         <th scope="col">Họ tên</th>
-                        <th scope="col">Tên công ty</th>
                         <th scope="col">Địa chỉ</th>
                         <th scope="col">SĐT</th>
                         <th scope="col">Email</th>
@@ -320,13 +277,12 @@ $result = mysqli_query($conn, $sql);
                 <tbody>
                     <?php foreach ($result as $key) : ?>
                         <tr>
-                            <th scope="row"><?php echo $key['MSKH'] ?></th>
+                            <th scope="row"><?php echo $key['MaKH'] ?></th>
                             <td><?php echo $key['HoTenKH'] ?></td>
-                            <td><?php echo $key['TenCongTy'] ?></td>
                             <td>
                                 <?php
                                 foreach ($result_address as $key_1) :
-                                    if ($key_1['MSKH'] == $key['MSKH']) {
+                                    if ($key_1['MaKH'] == $key['MaKH']) {
                                         echo '<li> - ' . $key_1['DiaChi'] . '</li>';
                                     }
                                 endforeach;

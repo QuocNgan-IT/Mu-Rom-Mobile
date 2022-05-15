@@ -37,7 +37,6 @@ if (isset($_POST['logout'])) {
 
 // Order
 // // Add Order
-
 if (isset($_GET['sub_add_order']) && isset($_SESSION['cart_product']) && isset($_SESSION['cart_MSKH'])) {
 
     $MSKH = $_SESSION['cart_MSKH'];
@@ -101,7 +100,6 @@ if (isset($_GET['sub_add_customer'])) {
 }
 
 // // Edit Customer
-
 if (isset($_GET['sub_edit_customer']) && isset($_GET['MSKH'])) {
 
     $MSKH = $_GET['MSKH'];
@@ -123,7 +121,6 @@ if (isset($_GET['sub_edit_customer']) && isset($_GET['MSKH'])) {
 }
 
 // // Delete Customer
-
 if (isset($_GET['sub_del_customer']) && isset($_GET['MSKH'])) {
     $MSKH = $_GET['MSKH'];
 
@@ -176,7 +173,6 @@ if (isset($_GET['check_username_personnel']) && isset($_GET['Username'])) {
         echo 0;
 }
 // // Edit Personnel
-
 if (isset($_GET['sub_edit_personnel']) && isset($_GET['MSNV'])) {
     $MSNV = $_GET['MSNV'];
     $name = $_GET['name'];
@@ -191,7 +187,6 @@ if (isset($_GET['sub_edit_personnel']) && isset($_GET['MSNV'])) {
 }
 
 // // Add Personnel
-
 if (isset($_GET['sub_add_personnel'])) {
 
     $name = $_GET['name'];
@@ -251,53 +246,9 @@ if (isset($_GET['xoa_hangsx']) && isset($_GET['MaHang'])) {
     $_SESSION['mess'] = "Xóa hãng điện thoại thành công";
 }
 
-// Product
-// // // Thêm điện thoại
-// if (isset($_GET['sub_add_product'])) {
-//     $name = $_GET['name'];
-//     $rule = $_GET['rule'];
-//     $quantity = $_GET['quantity'];
-//     $price = $_GET['price'];
-//     $category = $_GET['category'];
-//     $description = $_GET['description'];
-
-//     $sql_list_product_add = "INSERT INTO `hanghoa` (`MSHH`, `TenHH`, `QuyCach`, `Gia`, `SoLuongHang`, `MaLoaiHang`, `GhiChu`) 
-//     VALUES (NULL, '$name', '$rule', '$price', '$quantity', '$category', '$description')";
-//     mysqli_query($conn, $sql_list_product_add);
-
-//     $_SESSION['mess'] = "Thêm sản phẩm thành công";
-// }
-
-// // Edit Product
-if (isset($_GET['sub_edit_product']) && isset($_GET['MSHH'])) {
-    $MSHH = $_GET['MSHH'];
-    $name = $_GET['name'];
-    $rule = $_GET['rule'];
-    $quantity = $_GET['quantity'];
-    $price = $_GET['price'];
-    $category = $_GET['category'];
-    $description = $_GET['description'];
-
-    $sql_list_product_edit = "UPDATE `hanghoa` 
-        SET 
-            `TenHH` = '$name', 
-            `QuyCach` = '$rule', 
-            `SoLuongHang` = '$quantity', 
-            `Gia` = '$price', 
-            `MaLoaiHang` = '$category', 
-            `GhiChu` = '$description'
-        WHERE `hanghoa`.`MSHH` = '$MSHH'";
-    mysqli_query($conn, $sql_list_product_edit);
-
-    $_SESSION['mess'] = "Chỉnh sửa sản phẩm thành công";
-}
-
 // // Xóa điện thoại
-if (isset($_GET['xoa_dienthoai']) && isset($_GET['MaDT'])) {
-    $MaDT = $_GET['MaDT'];
-
-    $sql_list_product_delete = "DELETE FROM `hanghoa` WHERE `hanghoa`.`MSHH` = '$MSHH'";
-    mysqli_query($conn, $sql_list_product_delete);
+if (isset($_GET['xoa_dienthoai']) && isset($_GET['maDT'])) {
+    $MaDT = $_GET['maDT'];
 
     //Xoa hinhanh -> xoa cauhinhdt -> xoa dienthoai
     // // xoa hinhanh
@@ -313,78 +264,11 @@ if (isset($_GET['xoa_dienthoai']) && isset($_GET['MaDT'])) {
     // // xoa cauhinhdt
     mysqli_query($conn, "DELETE FROM `cauhinhdt` WHERE `cauhinhdt`.MaDT='$MaDT'");
 
+    // // xoa uudiemdt
+    mysqli_query($conn, "DELETE FROM `uudiemdt` WHERE `uudiemdt`.MaDT='$MaDT'");
+
     // // xoa dienthoai
     mysqli_query($conn, "DELETE FROM `dienthoai` WHERE `dienthoai`.MaDT='$MaDT'");
 
     $_SESSION['mess'] = "Xóa sản phẩm thành công";
-}
-
-// Revenue
-if (isset($_GET['add_revenue'])) {
-
-    $today = date("Y-m-d");
-
-    $product = $_GET['product'];
-    $order = $_GET['order'];
-    $revenue = $_GET['revenue'];
-
-    $sql = "INSERT INTO `doanhthu` (`Ngay`, `DoanhThu`, `SoDonHang`, `SoSanPham`) VALUES ('$today', '$revenue', '$order', '$product')";
-    mysqli_query($conn, $sql);
-
-    $_SESSION['mess'] = "Đóng ca thành công";
-}
-
-// Chart
-// // Product Chart
-if (isset($_GET['data_product_chart'])) {
-    header('Content-Type: application/json');
-    $today = date("Y-m-d");
-
-    $result_product_day = array();
-    $sql_category = "SELECT * FROM `loaihanghoa`";
-    $result_category = mysqli_query($conn, $sql_category);
-    foreach ($result_category as $key) :
-        $sql_product_day = "SELECT  TenLoaiHang, SUM(SoLuong) as SoLuong
-                      FROM `chitietdathang`, `dathang`, `loaihanghoa`, `hanghoa` 
-                      WHERE chitietdathang.SoDonDH = dathang.SoDonDH && 
-                            chitietdathang.MSHH = hanghoa.MSHH && 
-                            hanghoa.MaLoaiHang = loaihanghoa.MaLoaiHang && 
-                            NgayDH = '$today' && 
-                            loaihanghoa.MaLoaiHang = " . $key['MaLoaiHang'];
-        $temp_product_day = mysqli_query($conn, $sql_product_day);
-        $product_day = mysqli_fetch_assoc($temp_product_day);
-        $result_product_day[] = $product_day;
-    endforeach;
-
-    echo json_encode($result_product_day);
-}
-
-// // Revenue Chart
-if (isset($_GET['data_revenue_chart'])) {
-    header('Content-Type: application/json');
-    $today = date("Y-m-d");
-
-    $result_revenue = array();
-    $sql_revenue = "SELECT Ngay, DoanhThu FROM `doanhthu` ORDER BY Ngay DESC LIMIT 7";
-    $temp_revenue = mysqli_query($conn, $sql_revenue);
-    foreach ($temp_revenue as $key) :
-        $result_revenue[] = $key;
-    endforeach;
-
-    echo json_encode($result_revenue);
-}
-
-// // Product Order Chart
-if (isset($_GET['data_product_order_chart'])) {
-    header('Content-Type: application/json');
-    $today = date("Y-m-d");
-
-    $result_product_order = array();
-    $sql_product_order = "SELECT Ngay, SoSanPham, SoDonHang FROM `doanhthu` ORDER BY Ngay DESC LIMIT 7";
-    $temp_product_order = mysqli_query($conn, $sql_product_order);
-    foreach ($temp_product_order as $key) :
-        $result_product_order[] = $key;
-    endforeach;
-
-    echo json_encode($result_product_order);
 }

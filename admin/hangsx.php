@@ -3,7 +3,7 @@ include "connect.php";
 session_start();
 
 //Tính toán số dữ liệu để hiển thị theo trang
-$numOfData = 5; //Số dữ liệu hiển thị trong 1 trang
+$numOfData = 3; //Số dữ liệu hiển thị trong 1 trang
 $sql = "select count(*) from hangsx";
 $sql_1 = $conn->query($sql)->fetch_array();
 $numOfPages = ceil($sql_1[0]/$numOfData);
@@ -14,27 +14,6 @@ if (!isset($_GET['page'])) {
 } else {
     $vtbd = ($_GET['page']-1) * $numOfData;
 }
-?>
-<!-- Phân trang -->
-<script>
-  $(".page-item").click(function(e) {
-    e.preventDefault();
-
-    var Page = $(this).attr("Page");
-    
-    $.get("hangsx.php", {
-      page: Page,
-      pagination: true
-    }, function(data) {
-      $("#content").html(data);
-      $(".page-item").removeClass("active");
-      $(this).toggleClass("active");
-    });
-  });
-</script>
-<!--  -->
-
-<?php
 //
 
 $sql = "SELECT * FROM `hangsx` LIMIT $vtbd,$numOfData";
@@ -158,7 +137,6 @@ $result = mysqli_query($conn, $sql);
 
     // Close
     $(".icon-close").click(function() {
-
       $(".form").hide(500);
       $(".form-layout").hide();
     });
@@ -168,6 +146,25 @@ $result = mysqli_query($conn, $sql);
       $(".message").hide(500);
       $(".message-overlay").hide();
     });
+
+    // Pagination
+    // $(".page-item").click(function(e) {
+    //   e.preventDefault();
+
+    //   var Page = $(this).attr("Page");
+      
+    //   $.get("hangsx.php", {
+    //     page: Page,
+    //     pagination: true
+    //   }, function(data) {
+    //     $("#content").html(data);
+    //   });
+    // });
+
+    // $(".page-item").click(function() {
+    //     $(".page-item").removeClass("active");
+    //     $(this).toggleClass("active");
+    // });    
 
   });
 </script>
@@ -221,17 +218,16 @@ $result = mysqli_query($conn, $sql);
           <?php endforeach; ?>
         </tbody>
       </table>
-
-      <!-- Phân trang -->      
+      <!-- <div class="row justify-content-between">
         <ul class="pagination">
           <li class="page-item active" Page="1">1</li>
-          <?php for ($i=2; $i<=$numOfPages; $i++) { ?>     
-              <li class="page-item" Page="<?php echo $i ?>">
-                <?php echo $i ?>
-              </li>
-          <?php } ?>
+          <?php //for ($i=2; $i<=$numOfPages; $i++) { ?>     
+            <li class="page-item" Page="<?php //echo $i ?>">
+              <?php //echo $i ?>
+            </li>
+          <?php //} ?>
         </ul> 
-
+      </div> -->
       <div class="row justify-content-end">
         <span class="icon-add" id="add-hangsx">
           Thêm <i class="fas fa-plus"></i>
