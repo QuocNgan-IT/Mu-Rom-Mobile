@@ -1,0 +1,311 @@
+* {
+    box-sizing: border-box;
+    margin: 0 0;
+    padding: 0 0;
+    font-family:Roboto, Helvetica, sans-serif;
+}
+
+body {
+    margin: 0;
+}
+
+:root {
+    --color-1-: rgb(177, 9, 9);
+    --color-2-: #e2e9f0;
+}
+
+/* Trang chủ */
+.tieude {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tieude1 {
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: tomato;
+    height: 100px;
+    border-radius: 10px;
+}
+
+.tieude1:hover {
+    background-color: rgb(223, 41, 9);
+    box-shadow: 0 4px 8px 0 tomato, 0 6px 20px 0 tomato;
+}
+
+.tieude2 {
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: #7FFF00;
+    height: 100px;
+    border-radius: 10px
+}
+
+.tieude2:hover {
+    background-color: #20e406;
+    box-shadow: 0 4px 8px 0 #7FFF00, 0 6px 20px 0 #7FFF00;
+}
+
+.tieude3 {
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    background-color: Orange;
+    height: 100px;
+    border-radius: 10px
+}
+
+.tieude3:hover {
+    background-color: rgb(245, 101, 4);
+    box-shadow: 0 4px 8px 0 orange, 0 6px 20px 0 orange;
+}
+
+.tieude p {
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+    margin: 0 auto;
+    text-align: center;
+    text-decoration: none; 
+}
+
+.footer {
+    background-color: var(--color-1-);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100px;
+    margin: 0;
+}
+
+.footer p {
+    color: white;
+}
+
+.dienthoai-hot {
+    background-color: white;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+.dienthoai-hot p {
+    font-size: 28px;
+    color: var(--color-1-);
+    font-weight: bold;
+    margin: 20px 0 10px 10px;
+}
+
+.o-hangdt {
+    border-radius: 5px;
+    background-color: white;
+    border: 2px solid var(--color-1-);
+    padding: 10px;
+    margin: 0 15px 10px 15px;
+    display: inline-block;
+}
+
+.o-hangdt:hover {
+    box-shadow: 0 4px 8px 0 tomato, 0 6px 20px 0 tomato;
+}
+
+.o-hangdt img {
+    width: 75px;
+}
+
+.body-kddt {
+    background-color: var(--color-2-);
+}
+
+.khuyenmai img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.dienthoai {
+    border-radius: 10px;
+    background-color: white;
+    border: 0;
+    padding: 0;
+    margin: 15px 5px 15px 5px;
+}
+
+.dienthoai img {
+    height: 300px;
+    width: 300px;
+    display: block;
+    margin: 20px auto;
+}
+
+.dienthoai02 img {
+    height: 200px;
+    width: 200px;
+    display: block;
+    margin: 20px auto;
+}
+
+.dienthoai a {
+    font-size: 18px;
+    color: rgba(31, 30, 30, 0.651);
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.dienthoai02 a {
+    font-size: 18px;
+    color: rgba(31, 30, 30, 0.651);
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 300px;
+    width: 200px;
+}
+
+.dienthoai02 p {
+    font-size: 18px;
+}
+
+.p-nho h6 {
+    font-size: 16px;
+    color: #555;
+}
+
+.gia-dt p {
+    font-size: 22px;
+    color: red;
+    margin-top: 5px;
+}
+
+.giagoc-dt p {
+    font-size: 14px;
+    color: gray;
+    margin-top: 5px;
+}
+
+.gia {
+    display: flex;
+    align-items: center;
+    margin-top: 0px;
+}
+
+.nav-li li a{
+    text-decoration: none;
+    color: white;
+}
+
+.canhgiua img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ten-hover:hover a {
+    color: rgb(255, 0, 0);
+}
+
+.input_search {
+    border-radius: 5px 0 0 5px;
+    width: 500px;
+}
+
+.search_icon {
+    width: 40px;
+    background-color: black;
+    color: white;
+}
+
+/* ------------------------ Trang chi tiết --------------------------*/
+p.tendt {
+    font-size: 30px;
+    color: var(--color-1-);
+    font-weight: bold;
+}
+
+p.gia-dt-chitiet {
+    font-size: 36px;
+    color: red;
+    font-weight: bold;
+    margin-top: -14px;
+}
+
+p.giagoc-dt-chitiet {
+    font-size: 24px;
+    color: gray;
+    position: absolute;
+    top: 54px;
+    left: 227px;
+}
+
+span.pre-anh {
+    background-image: url(../Images/icons8-chevron-left-30.png);
+    width: 30px;
+    height: 30px;
+    /* opacity: 0; */
+}
+
+/* span.pre-anh:hover {
+    opacity: 0.6;
+} */
+
+span.next-anh {
+    background-image: url(../Images/icons8-chevron-left-30.png);
+    width: 30px;
+    height: 30px;
+    /* opacity: 0; */
+    transform: rotate(180deg); /* Để xoay 180 độ */
+}
+
+/* span.next-anh:hover {
+    opacity: 0.6;
+} */
+
+.cauhinh-list li {
+    align-items: flex-start;
+    display: flex;
+    padding: 3px;
+}
+
+.liright {
+    width: calc(100% - 140px);
+}
+
+.timeline-star {
+    background-color: #eee;
+    height: 4px;
+    position: relative;
+    width: 190px;
+    margin-left: 5px;
+    margin-bottom: 3px;
+}
+
+.timing {
+    background-color: #fe8c23;
+    left: 0;
+    height: 4px;
+    position: absolute;
+    top: 0;
+    
+}
+
+.tieudenho {
+    font-size: 16px;
+    color: var(--color-1-);
+    font-weight: bold;
+    margin-top: 5px
+}
+
+.obinhluan {
+    border-radius: 5px;
+    margin: 15px 0 15px 0;
+}
+
+.omausac {
+    height: 100px;
+    padding: 4px;
+}
