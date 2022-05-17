@@ -34,11 +34,10 @@ $(".button-collapse").sideNav();
         <div class="card card-ecommerce">
             <div class="card-body">
                 <div class="table-responsive" id="cart-content">
-                    
                 </div>
             </div>
         </div>
     </section>
-    <div>Form thanh toán</div>
+    <div id="order-content"></div>
 </div>
 

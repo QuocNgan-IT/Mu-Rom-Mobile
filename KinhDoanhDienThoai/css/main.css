@@ -309,3 +309,11 @@ span.next-anh {
     height: 100px;
     padding: 4px;
 }
+
+.required label:after {
+    color: none;
+    content: '(';
+    color: red;
+    content: '*';
+    display: inline;
+}

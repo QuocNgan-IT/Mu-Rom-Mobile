@@ -1,13 +1,91 @@
 <?php 
 include("./config.php");
+session_start();
+
+$maKH = $_SESSION['khachhang']['MaKH'];
+
+if (isset($_GET['xoaDH']) && isset($_GET['maGHxoa'])) {
+    $maGHxoa = $_GET['maGHxoa'];
+    $sql_xoa = "delete from giohang where MaGH='$maGHxoa'";
+    mysqli_query($mysqli, $sql_xoa);
+
+    //Cập nhật lại số SP mua
+    // (new SQL)->reloadCartArea(); 
+    // reload_parent();
+}
+
+if (isset($_GET['maGH'])) {
+    $maGHchange = $_GET['maGH'];
+
+    $sql = "SELECT * from dienthoai,giohang where dienthoai.MaDT=giohang.MaDT and giohang.MaGH='$maGHchange'";
+    $sqlResult = $mysqli->query($sql)->fetch_array();
+
+    $soLuongMua = $sqlResult['SoLuongMua'];
+    $hangCon = $sqlResult['SoLuong']-$sqlResult['DaBan'];
+    // Event nút giảm
+    if (isset($_GET['giamSL'])) {
+        if ($soLuongMua <= 1) {
+            $_SESSION['err'] = "Số lượng đặt hàng đạt tối thiểu, mời xóa nêu muốn!";
+        } else {
+            $mysqli->query("UPDATE giohang set SoLuongMua=SoLuongMua-1 where giohang.MaGH='$maGHchange'");
+        }
+    }
+    // Event nút tăng
+    if (isset($_GET['tangSL'])) {
+        if ($soLuongMua > $hangCon) {
+            $_SESSION['err'] = "Số lượng đặt hàng đạt tối đa!";
+        } else {
+            $mysqli->query("UPDATE giohang set SoLuongMua=SoLuongMua+1 where giohang.MaGH='$maGHchange'");
+        }
+    }
+}
 ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script type="text/javascript">
 // Material Select Initialization
 $(document).ready(function () {
-    $("#testbtn").click(function(e) {
-      $("#test").load("temp.php");
+    $("#btn-xoa").click(function(e) {
+        e.preventDefault();
+        //$("#test").load("temp.php");
+        var maGHxoa = $(this).attr("maGHxoa");
+
+        $.get("noidung-giohang.php", {
+            maGHxoa: maGHxoa,
+            xoaDH: true
+      }, function(data) {
+        $("#cart-content").html(data);
+      }); 
     });
+
+    $("#giamSL").click(function(e) {
+        e.preventDefault();
+        var maGH = $(this).attr("maGH");
+
+        $.get("noidung-giohang.php", {
+            maGH: maGH,
+            giamSL: true
+      }, function(data) {
+        $("#cart-content").html(data);
+      }); 
+    });
+
+    $("#tangSL").click(function(e) {
+        e.preventDefault();
+        var maGH = $(this).attr("maGH");
+
+        $.get("noidung-giohang.php", {
+            maGH: maGH,
+            tangSL: true
+      }, function(data) {
+        $("#cart-content").html(data);
+      }); 
+    });
+
+    $("#order-btn").click(function(e) {
+        e.preventDefault();
+        $("#order-content").load("bieumaumuahang.php");
+    });
+
 });
 </script>
 <table class="table product-table table-cart-v-2">
@@ -34,8 +112,9 @@ $(document).ready(function () {
     </thead>
     <tbody>
         <?php
-            $sql_giohang = "SELECT * FROM giohang, dienthoai WHERE giohang.MaDT = dienthoai.MaDT AND giohang.MaKH = 1";
+            $sql_giohang = "SELECT * FROM giohang, dienthoai WHERE giohang.MaDT = dienthoai.MaDT AND giohang.MaKH ='$maKH'";
             $query_giohang = mysqli_query($mysqli, $sql_giohang);
+            $tongTien=0;
             while ($row_giohang = mysqli_fetch_array($query_giohang)) {
         ?>
         <tr>
@@ -66,19 +145,19 @@ $(document).ready(function () {
             ?></td>
             <td style="color: red; font-size: 18px;font-weight:bold"><?php echo number_format($row_giohang['GiaKhuyenMai'], 0, '', '.') ?> đ</td>
             <td class="text-center text-md-left">
-                <span class="qty">1 </span>
+                <span class="qty"><?php echo $row_giohang['SoLuongMua'] ?></span>
                 <div class="btn-group radio-group ml-2" data-toggle="buttons">
-                <label class="btn btn-sm btn-danger btn-rounded">
-                    <input type="radio" name="options" id="option1">&mdash;
+                <label class="btn btn-sm btn-danger btn-rounded" id="giamSL" maGH="<?php echo $row_giohang['MaGH'] ?>">
+                    <input type="radio" name="options">-
                 </label>
-                <label class="btn btn-sm btn-danger btn-rounded">
-                    <input type="radio" name="options" id="option2">+
+                <label class="btn btn-sm btn-danger btn-rounded" id="tangSL" maGH="<?php echo $row_giohang['MaGH'] ?>">
+                    <input type="radio" name="options">+
                 </label>
                 </div>
             </td>
-            <td style="color: red; font-size: 18px;font-weight:bold"><?php echo number_format($row_giohang['GiaKhuyenMai'], 0, '', '.') ?> đ</td>
+            <td style="color: red; font-size: 18px;font-weight:bold"><?php $tien=$row_giohang['GiaKhuyenMai']*$row_giohang['SoLuongMua']; $tongTien+=$tien;  echo number_format($tien, 0, '', '.') ?> đ</td>
             <td>
-                <button type="button" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" id="testbtn" title="Remove item">X
+                <button type="button" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" id="btn-xoa" maGHxoa="<?php echo $row_giohang['MaGH'] ?>" title="Remove item">X
                 </button>
             </td>
         </tr>
@@ -86,7 +165,7 @@ $(document).ready(function () {
             }
         ?>
         <tr>
-            <td colspan="3"></td>
+            <td colspan="3"><div style="color:red;font-weight:bold"><?php if (isset($_SESSION['err'])) {echo $_SESSION['err']; unset($_SESSION['err']);} ?></div></td>
             <td>
                 <h4 class="mt-2">
                     <strong>Tổng tiền:</strong>
@@ -94,16 +173,13 @@ $(document).ready(function () {
             </td>
             <td class="text-right">
                 <h4 class="mt-2">
-                    <strong style="color: red">9.490.000 đ</strong>
+                    <strong style="color: red"><?php echo number_format($tongTien, 0, '', '.') ?></strong>
                 </h4>
             </td>
             <td colspan="3" class="text-right">
-                <button type="button" class="btn btn-danger btn-rounded">THANH TOÁN
+                <button type="button" class="btn btn-danger btn-rounded" id="order-btn">THANH TOÁN
                 </button>
             </td>
-        </tr>
-        <tr>
-            <td id="test"></td>
         </tr>
     </tbody>
 </table>

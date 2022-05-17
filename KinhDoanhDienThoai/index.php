@@ -64,7 +64,7 @@
             </div>
           </li>
           <li class="nav-item ten-hover">
-            <a href="?route=giohang" class="nav-link font-weight-bold ">          
+            <a href="?route=giohang" class="nav-link font-weight-bold " id="cart-area">          
                 Giỏ hàng
                 <?php
                   $sql_soluonggh = "SELECT COUNT(MaGH) soluong FROM giohang";

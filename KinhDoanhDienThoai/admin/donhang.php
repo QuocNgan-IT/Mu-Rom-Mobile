@@ -59,8 +59,7 @@ $result = mysqli_query($conn, $sql);
         search: true
       }, function(data) {
         $("#content").html(data);
-      });
-
+      }); 
     });
 
     $(".xuly-don").click(function(e) {
@@ -224,12 +223,12 @@ if (isset($_POST['chitiet_donhang']) && isset($_POST['MaDH'])) {
         </span>
         <!-- Xác nhận đơn -->
         <?php if ($resultChiTiet['TrangThaiDH'] == "Chờ xác nhận") : ?>
-          <span type="button" class="col icon-add xuly-don" MaDH="<?php echo $MaDH ?>" TrangThaiDHnew="Đã duyệt">
+          <span type="button" class="col icon-add xuly-don" MaDH="<?php echo $MaDH ?>" TrangThaiDHnew="Đang đóng gói">
             <i class="fas">Duyệt đơn</i>
           </span>
         <?php endif; ?>
         <!-- Giao đơn -->
-        <?php if ($resultChiTiet['TrangThaiDH'] == "Đã duyệt") : ?>
+        <?php if ($resultChiTiet['TrangThaiDH'] == "Đang đóng gói") : ?>
           <span type="button" class="col icon-add xuly-don" MaDH="<?php echo $MaDH ?>" TrangThaiDHnew="Đang giao">
             <i class="fas">Giao hàng</i>
           </span>

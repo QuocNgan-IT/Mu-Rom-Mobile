@@ -10,9 +10,9 @@
     if (mysqli_num_rows($renderGioHang)!=0) {
             $gioHang = "co";
     } else {
-        $gioHang = "khong";
+        $gioHang = "khong"; 
     }
-    
+     
 
     echo "<div class='chi_muc'>Giỏ hàng</div>";
     echo "<br>";

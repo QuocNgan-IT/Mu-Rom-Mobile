@@ -4,7 +4,7 @@
         $conn->query("delete from giohang where MaDT='$maDTXoa'");
 
         //Cập nhật lại số SP mua
-        (new SQL)->reloadCartArea();
+        (new SQL)->reloadCartArea(); 
         reload_parent();
     }
 ?>

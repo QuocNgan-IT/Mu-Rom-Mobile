@@ -25,7 +25,7 @@
 
                     //Nếu sp vừa thêm có trong giỏ hàng
                     if ($gioHangArr['MaDT']==$maDTMua) {
-                        $coTrongGio="Yes";
+                        $coTrongGio="Yes"; 
 
                         //Xử lý khi: số lượng mua trong giỏ + số lượng vừa thêm > số hàng còn trong kho
                         if ($gioHangArr['SoLuongMua']+$soLuongMua > $hangCon) {
