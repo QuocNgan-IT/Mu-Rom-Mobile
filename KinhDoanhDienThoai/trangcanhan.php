@@ -17,7 +17,7 @@
   $result = mysqli_query($mysqli, $sql);
   $result_chitiet = mysqli_query($mysqli, $sql_chitiet);
 ?>
-<link rel="stylesheet" href="../admin/css/style.css" />
+<link rel="stylesheet" href="./admin/css/style.css" />
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="bootstrap/jquery-3.5.1.min.js"></script>
 <script>
