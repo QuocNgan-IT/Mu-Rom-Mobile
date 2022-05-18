@@ -14,7 +14,19 @@ if (isset($_POST['them_comment'])) {
 // Xử lý đơn hàng - khách hàng
 if (isset($_GET['xuly_don'])) {
     $trangThaiDHnew = $_GET['TrangThaiDHnew'];
-    $maDHxuly = $_GET['MaDHxuly'];
+    $maDHxuly = $_GET['MaDHxuly']; 
+
+    if ($trangThaiDHnew == "Đã nhận hàng") {
+        $maKH = $_SESSION['khachhang']['MaKH'];
+
+        $getSLmua = $mysqli->query("SELECT * FROM `dathang`,`chitietdathang` WHERE `dathang`.MaDH=`chitietdathang`.MaDH AND `dathang`.MaKH='$maKH'");
+        while ($arrSLmua=$getSLmua->fetch_array()) {
+            $maDT = $arrSLmua['MaDT'];
+            $SLmua = $arrSLmua['SoLuong'];
+
+            $mysqli->query("UPDATE `dienthoai` SET `DaBan`='$SLmua' WHERE MaDT='$maDT'");
+        }
+    }
   
     $sqlXuly = "UPDATE `dathang` SET `TrangThaiDH`='$trangThaiDHnew' WHERE MaDH='$maDHxuly'";
     mysqli_query($mysqli, $sqlXuly);
