@@ -2,6 +2,7 @@
 include "connect.php";
 session_start();
 
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 $today = date("Y-m-d");
 $thisyear = date("Y");
 $timerange = " YEAR(NgayDH)>=YEAR(DATE_ADD(CURDATE(),INTERVAL -1 YEAR));";

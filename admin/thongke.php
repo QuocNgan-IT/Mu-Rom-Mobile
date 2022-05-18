@@ -2,6 +2,7 @@
 include "connect.php";
 session_start();
 
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 $today = date("Y-m-d");
 $result_revenue_total = 0;
 
@@ -10,9 +11,9 @@ $result_revenue_total = 0;
   //table chitietdathang: MaDHChiTiet,MaDH,MaDT,SoLuong,GiaDonHang
   //table khachhang:      MaKH,HoTenKH,SoDienThoai,Email,Username,Password
   //table diachikh:       MaDC,DiaChi,MaKH
-$sql_revenue_product = "SELECT SUM(SoLuong) as SoLuong FROM `dathang`, `chitietdathang` WHERE `dathang`.MaDH=`chitietdathang`.MaDH and NgayDH='$today'";
-$sql_revenue_order = "SELECT COUNT(MaDH) as SoDon FROM `dathang` WHERE NgayDH='$today'";
-$sql_revenue_total = "SELECT GiaDonHang as DoanhThu FROM `dathang`,`chitietdathang` WHERE `dathang`.MaDH=`chitietdathang`.MaDH and NgayDH='$today'";
+$sql_revenue_product = "SELECT SUM(SoLuong) as SoLuong FROM `dathang`, `chitietdathang` WHERE `dathang`.MaDH=`chitietdathang`.MaDH and NgayDH>='$today'";
+$sql_revenue_order = "SELECT COUNT(MaDH) as SoDon FROM `dathang` WHERE NgayDH>='$today'";
+$sql_revenue_total = "SELECT GiaDonHang as DoanhThu FROM `dathang`,`chitietdathang` WHERE `dathang`.MaDH=`chitietdathang`.MaDH and NgayDH>='$today'";
 
 $temp_revenue_product = mysqli_query($conn, $sql_revenue_product);
 $temp_revenue_order = mysqli_query($conn, $sql_revenue_order);

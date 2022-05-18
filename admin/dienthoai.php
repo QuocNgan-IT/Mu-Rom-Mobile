@@ -3,24 +3,24 @@ include "connect.php";
 session_start();
 
 //Tính toán số dữ liệu để hiển thị theo trang
-$numOfData = 15; //Số dữ liệu hiển thị trong 1 trang
-$sql = "select count(*) from dienthoai";
-$sql_1 = $conn->query($sql)->fetch_array();
-$numOfPages = ceil($sql_1[0]/$numOfData);
+// $numOfData = 15; //Số dữ liệu hiển thị trong 1 trang
+// $sql = "select count(*) from dienthoai";
+// $sql_1 = $conn->query($sql)->fetch_array();
+// $numOfPages = ceil($sql_1[0]/$numOfData);
 
-if (!isset($_GET['page'])) {
-    //Vị trí bắt đầu
-    $vtbd = 0;
-} else {
-    $vtbd = ($_GET['page']-1) * $numOfData;
-}
+// if (!isset($_GET['page'])) {
+//     //Vị trí bắt đầu
+//     $vtbd = 0;
+// } else {
+//     $vtbd = ($_GET['page']-1) * $numOfData;
+// }
 
 $sql_hangsx = "SELECT * FROM `hangsx`";
-$sql = "SELECT * FROM `dienthoai`,`hangsx` WHERE `dienthoai`.MaHang=`hangsx`.MaHang ORDER BY `dienthoai`.MaDT DESC LIMIT $vtbd,$numOfData";
+$sql = "SELECT * FROM `dienthoai`,`hangsx` WHERE `dienthoai`.MaHang=`hangsx`.MaHang ORDER BY `dienthoai`.MaDT DESC";// LIMIT $vtbd,$numOfData";
 
 if (isset($_GET['search']) && isset($_GET['key'])) {
   $key = $_GET['key'];
-  $sql = "SELECT * FROM `dienthoai`,`hangsx` WHERE `dienthoai`.MaHang=`hangsx`.MaHang  AND `dienthoai`.TenDT LIKE '%$key%' ORDER BY `dienthoai`.MaDT DESC LIMIT $vtbd,$numOfData";
+  $sql = "SELECT * FROM `dienthoai`,`hangsx` WHERE `dienthoai`.MaHang=`hangsx`.MaHang  AND `dienthoai`.TenDT LIKE '%$key%' ORDER BY `dienthoai`.MaDT DESC";// LIMIT $vtbd,$numOfData";
 }
 
 $result_hangsx = mysqli_query($conn, $sql_hangsx);

@@ -2,6 +2,7 @@
 include "connect.php";
 session_start();
 
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 $thismonth = date("m");
 $timerange = " MONTH(NgayDH)>=MONTH(DATE_ADD(CURDATE(),INTERVAL -1 MONTH));";
 $result_revenue_total = 0;

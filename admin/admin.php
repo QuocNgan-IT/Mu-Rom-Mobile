@@ -27,7 +27,6 @@ session_start();
         <li class="menu-item active" id="thongke">Thống kê</li>
         <li class="menu-item" id="donhang">Đơn hàng</li>
         <li class="menu-item" id="khachhang">Khách hàng</li>
-        <li class="menu-item" id="personnel">Nhân viên</li>
         <li class="menu-item" id="hangsx">Hãng điện thoại</li>
         <li class="menu-item" id="dienthoai">Điện thoại</li>
         <!-- <li class="menu-item" id="test">Test sửa điện thoại</li> -->
@@ -66,10 +65,6 @@ session_start();
 
       $("#khachhang").click(function(e) {
         $("#content").load("khachhang.php");
-      });
-
-      $("#personnel").click(function(e) {
-        $("#content").load("personnel.php");
       });
 
       $("#hangsx").click(function(e) {

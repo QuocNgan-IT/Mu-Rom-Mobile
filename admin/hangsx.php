@@ -3,20 +3,20 @@ include "connect.php";
 session_start();
 
 //Tính toán số dữ liệu để hiển thị theo trang
-$numOfData = 3; //Số dữ liệu hiển thị trong 1 trang
-$sql = "select count(*) from hangsx";
-$sql_1 = $conn->query($sql)->fetch_array();
-$numOfPages = ceil($sql_1[0]/$numOfData);
+// $numOfData = 3; //Số dữ liệu hiển thị trong 1 trang
+// $sql = "select count(*) from hangsx";
+// $sql_1 = $conn->query($sql)->fetch_array();
+// $numOfPages = ceil($sql_1[0]/$numOfData);
 
-if (!isset($_GET['page'])) {
-    //Vị trí bắt đầu
-    $vtbd = 0;
-} else {
-    $vtbd = ($_GET['page']-1) * $numOfData;
-}
-//
+// if (!isset($_GET['page'])) {
+//     //Vị trí bắt đầu
+//     $vtbd = 0;
+// } else {
+//     $vtbd = ($_GET['page']-1) * $numOfData;
+// }
+// //
 
-$sql = "SELECT * FROM `hangsx` LIMIT $vtbd,$numOfData";
+$sql = "SELECT * FROM `hangsx`";// LIMIT $vtbd,$numOfData";
 
 if (isset($_GET['search']) && isset($_GET['key'])) {
   $key = $_GET['key'];

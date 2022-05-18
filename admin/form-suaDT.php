@@ -9,7 +9,8 @@ if (isset($_SESSION['maDT-sua'])) :
     $sqlDienThoai = "SELECT * FROM `dienthoai`,`cauhinhdt` WHERE `dienthoai`.MaDT=`cauhinhdt`.MaDT AND `dienthoai`.MaDT='$maDT'";
     $temp = mysqli_query($conn, $sqlDienThoai);
 
-    $resultDienThoai = mysqli_fetch_array($temp);
+    if (mysqli_num_rows($temp)!=0)
+        $resultDienThoai = mysqli_fetch_array($temp);
 
     $sqlHangsx = "SELECT * FROM `hangsx`";
     $resultHangsx = mysqli_query($conn, $sqlHangsx);
@@ -227,9 +228,6 @@ if (isset($_SESSION['maDT-sua'])) :
             <div class="row">
                 <span class="list-personnel__title"> Sửa thông tin điện thoại </span>
             </div>
-            <div class="row form-item justify-content-center">
-                <span style="font-size:12px;color:slategray;">*Chọn xong ảnh trước khi nhập nội dung, tránh mất dữ liệu!*</span>
-            </div>
             <form action="">
                 <!-- Line 1 -->
                 <div class="row form-item justify-content-between">
@@ -445,9 +443,6 @@ if (isset($_SESSION['maDT-sua'])) :
                     <textarea class="description" id="moTa-sua" placeholder="Mô tả" rows="3"><?php echo $resultDienThoai['MoTa'] ?></textarea>
                 </div>
                 <div class="row error error_description"></div>
-                <div class="row form-item justify-content-center">
-                <span style="font-size:12px;color:slategray;">*Để trống tên ưu điểm điện thoại để xóa nội dung tương ứng*</span>
-            </div>
                 <!-- Line 13 -->
                 <div class="row form-item justify-content-between">
                     <!-- Tên ưu điểm 1 -->

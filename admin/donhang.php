@@ -1,12 +1,13 @@
 <?php
 include "connect.php";
 
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 $today = date("Y-m-d");
 
-if (isset($_GET['search']) && isset($_GET['key'])) {
+if (isset($_GET['search']) && isset($_GET['key']) && $_GET['key']!="") {
   $key = $_GET['key'];
-  $sql = "SELECT * FROM `dathang`,`khachhang` WHERE `dathang`.MaKH=`khachhang`.MaKH AND `dathang`.NgayDH='$key'";
-}
+  $sql = "SELECT * FROM `dathang`,`khachhang` WHERE `dathang`.MaKH=`khachhang`.MaKH AND `dathang`.NgayDH>='$key' ORDER BY `dathang`.MaDH DESC";
+} else $sql = "SELECT * FROM `dathang`,`khachhang` WHERE `dathang`.MaKH=`khachhang`.MaKH ORDER BY `dathang`.MaDH DESC";
 
 if (isset($_GET['xuly_don'])) {
   $trangThaiDHnew = $_GET['TrangThaiDHnew'];
@@ -17,7 +18,6 @@ if (isset($_GET['xuly_don'])) {
   $_SESSION['mess'] = "Trạng thái đơn hàng $maDHxuly -> $trangThaiDHnew";
 }
 
-$sql = "SELECT * FROM `dathang`,`khachhang` WHERE `dathang`.MaKH=`khachhang`.MaKH";
 $result = mysqli_query($conn, $sql);
 ?>
 
@@ -58,8 +58,7 @@ $result = mysqli_query($conn, $sql);
         search: true
       }, function(data) {
         $("#content").html(data);
-      });
-
+      }); 
     });
 
     $(".xuly-don").click(function(e) {
@@ -154,7 +153,7 @@ if (isset($_POST['chitiet_donhang']) && isset($_POST['MaDH'])) {
 
   //table dienthoai:      MaDT,TenDT,GiaGoc,GiaKhuyenMai,TrangThaiKM,TenTTKM,MoTa,SoLuong,DaBan,MaHang
   //table dathang:        MaDH,MaKH,LoiNhan,NgayDH,NgayGH,TrangThaiDH
-  //table chitietdathang: MaDHChiTiet,MaDH,MaDT,SoLuong,GiaDonHang
+  //table chitietdathang: MaDHChiTiet,MaDH,MaDT,MauSac,SoLuong,GiaDonHang
   //table khachhang:      MaKH,HoTenKH,SoDienThoai,Email,Username,Password
   //table diachikh:       MaDC,DiaChi,MaKH
 
@@ -172,7 +171,7 @@ if (isset($_POST['chitiet_donhang']) && isset($_POST['MaDH'])) {
 ?>
 
   <!-- Form chi tiết đơn hàng -->
-  <div class="form form-edit">
+  <div class="form form-edit" style="width: 50rem;">
     <div class=" col">
       <div class="row justify-content-end">
         <i class="fas fa-times icon-close" id="icon-close"></i>
@@ -196,13 +195,22 @@ if (isset($_POST['chitiet_donhang']) && isset($_POST['MaDH'])) {
             <div class="col">
               <?php foreach ($resultChiTietDH as $key) : ?>
                 <div class="row justify-content-between">
-                  <div class="col-5">
+                  <div class="col-4">
                     <span class="row order-detail__list-product--title"><?php echo $key['TenDT'] ?></span>
                   </div>
-                  <div class="col-2">
-                    <span class="order-detail__list-product--quantity">x<?php echo $key['SoLuong'] ?></span>
+                  <div class="col-3">
+                    <span class="order-detail__list-product--quantity">
+                      <?php
+                        $getTenMS = "SELECT TenMS FROM `mausacdt` WHERE MaMS='" . $key['MauSac'] . "'";
+                        $tenMS = $conn->query($getTenMS)->fetch_array();
+                       echo $tenMS[0];  
+                       ?>
+                    </span>
                   </div>
-                  <div class="col-5">
+                  <div class="col-1">
+                    <span class="order-detail__list-product--quantity">x<?php echo $key['SoLuong'] ?></span>
+                  </div>                  
+                  <div class="col-4">
                     <span class="order-detail__list-product--quantity"><?php $sum+=($key['GiaDonHang']); echo number_format(($key['GiaDonHang']), 0, '', '.') ?> vnd</span>
                   </div>
                 </div>
@@ -223,12 +231,12 @@ if (isset($_POST['chitiet_donhang']) && isset($_POST['MaDH'])) {
         </span>
         <!-- Xác nhận đơn -->
         <?php if ($resultChiTiet['TrangThaiDH'] == "Chờ xác nhận") : ?>
-          <span type="button" class="col icon-add xuly-don" MaDH="<?php echo $MaDH ?>" TrangThaiDHnew="Đã duyệt">
+          <span type="button" class="col icon-add xuly-don" MaDH="<?php echo $MaDH ?>" TrangThaiDHnew="Đang đóng gói">
             <i class="fas">Duyệt đơn</i>
           </span>
         <?php endif; ?>
         <!-- Giao đơn -->
-        <?php if ($resultChiTiet['TrangThaiDH'] == "Đã duyệt") : ?>
+        <?php if ($resultChiTiet['TrangThaiDH'] == "Đang đóng gói") : ?>
           <span type="button" class="col icon-add xuly-don" MaDH="<?php echo $MaDH ?>" TrangThaiDHnew="Đang giao">
             <i class="fas">Giao hàng</i>
           </span>

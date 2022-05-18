@@ -5,7 +5,7 @@ session_start();
 $sqlHangsx = "SELECT * FROM `hangsx`";
 $resultHangsx = mysqli_query($conn, $sqlHangsx);
 
-$sqlKhuyenMai = "SELECT * FROM `trangthaikm` WHERE MaTTKM='1' OR MaTTKM='3'";
+$sqlKhuyenMai = "SELECT * FROM `trangthaikm`";
 $resultKhuyenMai = mysqli_query($conn, $sqlKhuyenMai);
 
 //Làm sạch bảng Temp
@@ -193,9 +193,9 @@ if (isset($_SESSION['dontCleanTemp'])) { unset($_SESSION['dontCleanTemp']); }els
             <div class="row">
                 <span class="list-personnel__title"> Thêm điện thoại </span>
             </div>
-            <div class="row form-item justify-content-center">
+            <!-- <div class="row form-item justify-content-center">
                 <span style="font-size:12px;color:slategray;">*Chọn xong ảnh trước khi nhập nội dung, tránh mất dữ liệu!*</span>
-            </div>
+            </div> -->
             <form action="">
                 <!-- Line 1 -->
                 <div class="row form-item justify-content-between">

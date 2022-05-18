@@ -2,6 +2,7 @@
 include "connect.php";
 session_start();
 
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 $thismonth = date("m");
 $temp = strtotime(date("Y-m"));
 $last1month = date("m", strtotime("-1 month", $temp));
