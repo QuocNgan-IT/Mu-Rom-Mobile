@@ -44,7 +44,7 @@ if (isset($_GET['maGH'])) {
 <script type="text/javascript">
 // Material Select Initialization
 $(document).ready(function () {
-    $("#btn-xoa").click(function(e) {
+    $(".btn-xoa").click(function(e) {
         e.preventDefault();
         //$("#test").load("temp.php");
         var maGHxoa = $(this).attr("maGHxoa");
@@ -57,7 +57,7 @@ $(document).ready(function () {
       }); 
     });
 
-    $("#giamSL").click(function(e) {
+    $(".giamSL").click(function(e) {
         e.preventDefault();
         var maGH = $(this).attr("maGH");
 
@@ -69,7 +69,7 @@ $(document).ready(function () {
       }); 
     });
 
-    $("#tangSL").click(function(e) {
+    $(".tangSL").click(function(e) {
         e.preventDefault();
         var maGH = $(this).attr("maGH");
 
@@ -147,17 +147,17 @@ $(document).ready(function () {
             <td class="text-center text-md-left">
                 <span class="qty"><?php echo $row_giohang['SoLuongMua'] ?></span>
                 <div class="btn-group radio-group ml-2" data-toggle="buttons">
-                <label class="btn btn-sm btn-danger btn-rounded" id="giamSL" maGH="<?php echo $row_giohang['MaGH'] ?>">
+                <label class="btn btn-sm btn-danger btn-rounded giamSL" maGH="<?php echo $row_giohang['MaGH'] ?>">
                     <input type="radio" name="options">-
                 </label>
-                <label class="btn btn-sm btn-danger btn-rounded" id="tangSL" maGH="<?php echo $row_giohang['MaGH'] ?>">
+                <label class="btn btn-sm btn-danger btn-rounded tangSL" maGH="<?php echo $row_giohang['MaGH'] ?>">
                     <input type="radio" name="options">+
                 </label>
                 </div>
             </td>
             <td style="color: red; font-size: 18px;font-weight:bold"><?php $tien=$row_giohang['GiaKhuyenMai']*$row_giohang['SoLuongMua']; $tongTien+=$tien;  echo number_format($tien, 0, '', '.') ?> đ</td>
             <td>
-                <button type="button" class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="top" id="btn-xoa" maGHxoa="<?php echo $row_giohang['MaGH'] ?>" title="Remove item">X
+                <button type="button" class="btn btn-sm btn-danger btn-xoa" data-toggle="tooltip" data-placement="top" maGHxoa="<?php echo $row_giohang['MaGH'] ?>" title="Remove item">X
                 </button>
             </td>
         </tr>

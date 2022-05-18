@@ -6,7 +6,7 @@
     if (isset($_SESSION['xac_dinh_dang_nhap']) and $_SESSION['xac_dinh_dang_nhap']=="co") {
         echo "<script>self.close()</script>";
     }
-?>
+?> 
 
 <html>
     <head>

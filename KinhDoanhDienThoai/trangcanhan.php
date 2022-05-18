@@ -93,12 +93,12 @@
 
                 <li class='nav-item ten-hover'>
                   <a href='dangnhap.php' class='nav-link font-weight-bold'>
-                      Đăng nhập
+                    Đăng nhập
                   </a>
                 </li>
                 <li class='nav-item ten-hover'>
                   <a href='dangky.php' class='nav-link font-weight-bold'>
-                        Đăng ký
+                    Đăng ký
                   </a>
                 </li>
 

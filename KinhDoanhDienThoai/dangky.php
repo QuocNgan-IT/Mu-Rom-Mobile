@@ -3,6 +3,44 @@
   include("./autoload.php");
   // include("./xacdinhdangnhap.php");
   session_start();
+
+  if (isset($_POST['register'])) {
+      echo "có";
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $cfmPassword = $_POST['confirmPassword'];
+    $fullname = $_POST['fullname'];
+
+    $name = explode(' ', $_POST['fullname']);
+    $name = array_pop($name);
+
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $address = $_POST['address'];
+
+    $checkUsername = $mysqli->query("SELECT * from khachhang where username='$username'");
+    if (mysqli_num_rows($checkUsername)==0) {
+        if ($password==$cfmPassword) {
+            $checkEmail = $mysqli->query("SELECT * from khachhang where email='$email'");
+            if (mysqli_num_rows($check_email)==0) {
+                $checkPhone = $mysqli->query("SELECT * from khachhang where sodienthoai='$phone'");
+                if (mysqli_num_rows($checkPhone)==0) {
+                    //Table khachhang: maKH,tenKH,hotenKH,sodienthoai,email,AnhDaiDien,username,password
+                    $sql_add_user = "INSERT into khachhang value(null,'$name','$fullname','$phone','$email',null,'$username','$password')";
+                    $mysqli->query($sqlAddUser);
+
+                    //Table diachikh: madc,diachi,macdinh,makh
+                    $lastUser = $mysqli->query("SELECT MaKH from khachhang order by MaKH desc limit 1")->fetch_array();
+                    $mysqli->query("INSERT into diachikh value(null,'$address',1,'$lastUser[0]')");
+
+                    NotificationAndGoto("Đăng ký thành công, mời đăng nhập!","dangnhap.php");
+
+                } else NotificationAndGoback("Số điện thoại đã tồn tại!");
+            } else NotificationAndGoback("Email đã tồn tại!");
+        } else NotificationAndGoback("Mật khẩu không trùng khớp!");
+        
+    } else NotificationAndGoback("Tên đăng nhập đã tồn tại!");
+}
 ?>
 
 <!DOCTYPE html>
@@ -25,7 +63,39 @@
           --color-1-: #B51E1E;
       }
     </style>
-        
+    <script>
+        //Check password == confirm_password != null
+        var check = function() {
+            var pass = document.getElementById('password').value
+            var cf_pass = document.getElementById('confirmPassword').value
+            var regex = /([a-zA-Z])[a-zA-Z0-9]{3,}/
+
+            if (pass==cf_pass && pass!='' && pass.match(regex)) {
+                document.getElementById('confirmPassword').style.backgroundColor = '#00ff0080';
+                // document.getElementById('message').innerHTML = 'matching';
+            } else {
+                document.getElementById('confirmPassword').style.backgroundColor = '#ff000080';
+                // document.getElementById('message').innerHTML = 'not matching';
+            }
+        }
+    </script>
+    <script src="bootstrap/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $("#register").click(function(e) {
+                e.preventDefault();
+
+                
+
+                $.post("temp.php", {
+                    
+                    register: true
+                }, function(data) {
+                    $("#test").html(data);
+                });
+            });
+        });
+    </script>        
 </head>
 <body style="background-color: #eee" class="fixed-sn white-skin">
     <header>
@@ -53,6 +123,7 @@
                                 <img src="./Images/photo-1-1599888048800211691483.jpg" alt="User Photo" class="z-depth-1 mb-3 mx-auto" width="120px" height="120px" />
 
                                 <p class="text-muted"><small>Ảnh đại diện sẽ được thay đổi tự động</small></p>
+                                <div id="test"></div>
                                 <div class="row flex-center">
                                 <button class="btn btn-info btn-rounded btn-sm">Cập nhật</button><br>
                                 <!-- <button class="btn btn-danger btn-rounded btn-sm">Xóa</button> -->
@@ -72,14 +143,14 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="md-form mb-0">
-                                                <input type="text" id="form1" class="form-control validate">
-                                                <label for="form1" data-error="wrong" data-success="right">Tên đăng nhập</label>
+                                                <input type="text" id="username" class="form-control validate">
+                                                <label for="username" data-error="wrong" data-success="right">Tên đăng nhập</label>
                                             </div> 
-                                        </div>
+                                        </div> 
                                         <div class="col-md-6">
                                             <div class="md-form mb-0">
-                                                <input type="password" id="form2" class="form-control validate">
-                                                <label for="form2" data-error="wrong" data-success="right">Mật khẩu</label>
+                                                <input type="password" id="password" onkeyup='check();' class="form-control validate" pattern="^([a-zA-Z])[a-zA-Z0-9]{3,}" title="Tối thiểu 3 ký tự từ a-Z và 0-9, ký tự đầu tiên không phải số">
+                                                <label for="password" >Mật khẩu</label>
                                             </div>
                                         </div>
                                     </div>
@@ -87,15 +158,15 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="md-form mb-0">
-                                                <input type="text" id="form81" class="form-control validate">
-                                                <label for="form81" data-error="wrong" data-success="right">Họ tên khách hàng</label>
+                                                <input type="text" id="fullname" class="form-control validate">
+                                                <label for="fullname" data-error="wrong" data-success="right">Họ tên khách hàng</label>
                                             </div>
                                         </div>
 
                                         <div class="col-md-6">
                                             <div class="md-form mb-0">
-                                                <input type="password" id="form82" class="form-control validate">
-                                                <label for="form82" data-error="wrong" data-success="right">Nhập lại mật khẩu</label>
+                                                <input type="password" id="confirmPassword" onkeyup='check();' class="form-control validate">
+                                                <label id="lb-cnfpass" for="confirmPassword" >Nhập lại mật khẩu</label>
                                             </div>
                                         </div>
                                     </div>
@@ -103,8 +174,14 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="md-form mb-0">
-                                                <input type="email" id="form76" class="form-control validate">
-                                                <label for="form76">Email</label>
+                                                <input type="text" id="phone" class="form-control validate">
+                                                <label for="phone">Số điện thoại</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="md-form mb-0">
+                                                <input type="email" id="email" class="form-control validate">
+                                                <label for="email">Email</label>
                                             </div>
                                         </div>
                                     </div>
@@ -112,15 +189,15 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="md-form mb-0">
-                                                <textarea type="text" id="form78" class="md-textarea form-control" rows="3"></textarea>
-                                                <label for="form78">Địa chỉ</label>
+                                                <textarea type="text" id="address" class="md-textarea form-control" rows="3"></textarea>
+                                                <label for="address">Địa chỉ</label>
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="row">
                                         <div class="col-md-12 text-center my-4">
-                                            <input type="submit" value="Đăng ký" class="btn btn-danger btn-rounded">
+                                            <input type="submit" id="register" value="Đăng ký" class="btn btn-danger btn-rounded">
                                         </div>
                                     </div>
                                 </form>
