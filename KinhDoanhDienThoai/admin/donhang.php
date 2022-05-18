@@ -5,9 +5,9 @@ $today = date("Y-m-d");
 
 if (isset($_GET['search']) && isset($_GET['key']) && $_GET['key']!="") {
   $key = $_GET['key'];
-  $sql = "SELECT * FROM `dathang`,`khachhang` WHERE `dathang`.MaKH=`khachhang`.MaKH AND `dathang`.NgayDH='$key'";
+  $sql = "SELECT * FROM `dathang`,`khachhang` WHERE `dathang`.MaKH=`khachhang`.MaKH AND `dathang`.NgayDH='$key' ORDER BY `dathang`.MaDH DESC";
   $_SESSION['mess'] = $key;
-} else $sql = "SELECT * FROM `dathang`,`khachhang` WHERE `dathang`.MaKH=`khachhang`.MaKH";
+} else $sql = "SELECT * FROM `dathang`,`khachhang` WHERE `dathang`.MaKH=`khachhang`.MaKH ORDER BY `dathang`.MaDH DESC";
 
 if (isset($_GET['xuly_don'])) {
   $trangThaiDHnew = $_GET['TrangThaiDHnew'];

@@ -26,8 +26,9 @@
         //Tạo đơn hàng
             date_default_timezone_set('Asia/Ho_Chi_Minh');
             $ngayDH = date('Y-m-d H:i:s');
+            $ngayGH = date('Y-m-d H:i:s', strtotime($ngayDH. ' + 4 days'));
 
-            $mysqli->query("INSERT into dathang(MaKH,LoiNhan,NgayDH,TrangThaiDH) value('$maKH','$loiNhan','$ngayDH','Chờ xác nhận');");
+            $mysqli->query("INSERT into dathang(MaKH,LoiNhan,NgayDH,NgayGH,TrangThaiDH) value('$maKH','$loiNhan','$ngayDH','$ngayGH','Chờ xác nhận');");
 
             //Table chitietdathang: MaDHChiTiet,MaDH,MaDT,SoLuong,GiaDonHang
                 //Lấy mã DH vừa thêm

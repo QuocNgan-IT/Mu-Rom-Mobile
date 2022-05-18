@@ -5,7 +5,7 @@ session_start();
 $sqlHangsx = "SELECT * FROM `hangsx`";
 $resultHangsx = mysqli_query($conn, $sqlHangsx);
 
-$sqlKhuyenMai = "SELECT * FROM `trangthaikm` WHERE MaTTKM='1' OR MaTTKM='3'";
+$sqlKhuyenMai = "SELECT * FROM `trangthaikm`";
 $resultKhuyenMai = mysqli_query($conn, $sqlKhuyenMai);
 
 //Làm sạch bảng Temp
