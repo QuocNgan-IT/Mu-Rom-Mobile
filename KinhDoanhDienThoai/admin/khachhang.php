@@ -25,7 +25,6 @@ $result = mysqli_query($conn, $sql);
 
             var key = $("#search").val();
 
-
             $.get("khachhang.php", {
                 key: key,
                 search: true

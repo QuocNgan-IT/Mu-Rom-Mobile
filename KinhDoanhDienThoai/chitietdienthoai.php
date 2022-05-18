@@ -4,8 +4,32 @@
     $row_chitiet = mysqli_fetch_array($query_chitiet);
 
     if (isset($_GET['id'])) $MaDT = $_GET['id'];
-?>
 
+    if (isset($_POST['them_comment'])) {
+        $comment = $_POST['comment'];
+        $maKH = $_SESSION['khachhang']['MaKH'];
+
+        $mysqli->query("INSERT INTO `comment`(`MaBL`, `NoiDung`, `MaKH`, `MaDT`) VALUES (null,'$comment','$maKH','$MaDT')");
+    }
+?>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="bootstrap/jquery-3.5.1.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $("#submit_comment").click(function() {
+      var comment =  $("#comment").val();
+      var MaDT =  $(this).attr("MaDT");
+
+      $.post("action.php", {
+          comment: comment,
+          MaDT: MaDT,
+          them_comment: true
+        }, function() {
+          location.reload();
+        });
+    });
+  });
+</script>
 <section id="productDetails" class="pb-5">
     <div class="row mt-5" style="width: 100%">
         <div class="col-sm-1"></div>
@@ -490,12 +514,13 @@
         <div class="obinhluan" style="background-color:white;padding: 3px">
             <p class="tieudenho" style="margin: 5px 0 5px 10px">Bình luận đánh giá điện thoại <?php echo $row_chitiet['TenDT']?></p>
             <div class="md-form mb-0" style="margin: 15px 15px 10px 15px">
-                <textarea type="text" id="form76" class="md-textarea form-control" rows="1"></textarea>
+                <textarea type="text" id="comment" class="md-textarea form-control" rows="1"></textarea>
                 <label for="contact-message">Bình luận</label>
             </div>
-            <div class="text-center text-md-right mt-4" style="margin-right: 20px">
-                <a class="btn btn-rounded btn-outline-red waves-effect ">GỬI</a>
+            <div class="text-center text-md-right mt-4" style="margin-right: 20px" >
+                <a class="btn btn-rounded btn-outline-red waves-effect " id="submit_comment" MaDT="<?php echo $MaDT ?>">GỬI</a>
             </div>
+            <div id="testcomment"></div>
 
             <div>
                 <p class="tieudenho" style="margin: 5px 0 5px 10px;">Tất cả <?php
@@ -506,24 +531,25 @@
                 ?> bình luận</p>
 
                 <?php
-                    $sql_bl = "SELECT * FROM comment, khachhang WHERE comment.MaKH = khachhang.MaKH AND MaDT = ".$_GET["id"]."";
+                    $sql_bl = "SELECT * FROM comment, khachhang WHERE comment.MaKH = khachhang.MaKH AND MaDT='" . $_GET['id'] . "' ORDER BY comment.MaBL DESC";
                     $query_bl = mysqli_query($mysqli, $sql_bl);
-                    $row_bl = mysqli_fetch_array($query_bl);
+                    //$row_bl = mysqli_fetch_array($query_bl);
                 ?>
                 <div class="card-body">
-                    <ul class="list-unstyled">
+                    <?php while ($row_bl = mysqli_fetch_array($query_bl)) { ?>
+                    <ul class="list-unstyled">                        
                         <li class="media">
                             <img class="d-flex mr-3 z-depth-1" alt="Ảnh đại diện" src="./Images/KhachHang/photo-1-15998880606521810343834.jpg" height="70px" width="70px">
                             <div class="media-body">
                                 <h5 class="mt-0 mb-1" style="font-weight:bold"><?php echo $row_bl['HoTenKH'] ?></h5>
                                 <?php echo $row_bl['NoiDung'] ?>
                             </div>
-                        </li>
+                        </li>                        
                     </ul>
+                    <?php } ?>
                 </div>
             </div>
         </div>
-
         <!-- Ô hiển thị bình luận -->
         
     </div>
@@ -566,7 +592,6 @@
         };
         xmlhttp.open("GET", "themvaogiohang.php?mausac=" + mausac + "&madt=" + madt02, true);
         xmlhttp.send();
-    }
-    
+    }  
 </script>
 

@@ -611,7 +611,7 @@
                                       
                                       <div class="row" style="width: 100%;">
                                           <div class="col-sm-7 gia gia-dt" >
-                                          <p>&nbsp;&nbsp;<?php echo $row_tt['GiaKhuyenMai'] ?>đ</p>
+                                          <p>&nbsp;&nbsp;<?php echo number_format($row_tt['GiaKhuyenMai'], 0, '', '.') ?>đ</p>
                                           </div>
                                           <?php
                                               $sql_ttkm02 = "SELECT * FROM dienthoai WHERE MaDT = ".' '.$row_tt['MaDT'];
@@ -620,7 +620,7 @@
                                               if ($row_ttkm02['TrangThaiKM'] == 1 || $row_ttkm02['TrangThaiKM'] == 3) {
                                                   ?>
                                                       <div class="col-sm-5 gia giagoc-dt">
-                                                      <p class=""><del><?php echo $row_tt['GiaGoc'] ?>đ</del></p>
+                                                      <p class=""><del><?php echo number_format($row_tt['GiaGoc'], 0, '', '.') ?>đ</del></p>
                                                       </div>
                                                   <?php
                                               }

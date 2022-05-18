@@ -40,10 +40,11 @@
             $i = 0;
             while ($gioHangArr=$gioHang->fetch_array()) {
                 $maDT = $gioHangArr['MaDT'];
+                $mauSac = $gioHangArr['MauSac'];
                 $soLuong = $gioHangArr['SoLuongMua'];
                 $giaDH = $gioHangArr['GiaKhuyenMai']*$soLuong;
 
-                $mysqli->query("INSERT into chitietdathang value(null,'$maDH','$maDT','$soLuong','$giaDH');");
+                $mysqli->query("INSERT into chitietdathang value(null,'$maDH','$maDT','$mauSac','$soLuong','$giaDH');");
                 $i++;
             }
 

@@ -3,8 +3,62 @@
   include("./autoload.php");
   // include("./xacdinhdangnhap.php");
   session_start();
-?>
+  $MaKH = $_SESSION['khachhang']['MaKH'];
 
+  //table dienthoai:      MaDT,TenDT,GiaGoc,GiaKhuyenMai,TrangThaiKM,TenTTKM,MoTa,SoLuong,DaBan,MaHang
+  //table dathang:        MaDH,MaKH,LoiNhan,NgayDH,NgayGH,TrangThaiDH
+  //table chitietdathang: MaDHChiTiet,MaDH,MaDT,SoLuong,GiaDonHang
+  //table khachhang:      MaKH,HoTenKH,SoDienThoai,Email,Username,Password
+
+  $sql = "SELECT * FROM `dathang`,`khachhang` WHERE `dathang`.MaKH=`khachhang`.MaKH AND `khachhang`.MaKH='$MaKH' ORDER BY `dathang`.MaDH DESC";
+
+  $sql_chitiet = "SELECT * FROM `dienthoai`,`chitietdathang` WHERE `dienthoai`.MaDT=`chitietdathang`.MaDT ORDER BY `chitietdathang`.MaDH DESC";
+
+  $result = mysqli_query($mysqli, $sql);
+  $result_chitiet = mysqli_query($mysqli, $sql_chitiet);
+?>
+<link rel="stylesheet" href="../admin/css/style.css" />
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="bootstrap/jquery-3.5.1.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $(".chitiet-dathang").click(function(e) {
+      e.preventDefault();
+      var MaDH = $(this).attr("MaDH");
+
+      $.post("chitietdonhang.php", {
+          MaDH: MaDH,
+          chitiet_donhang: true
+        }, function(data) {
+          $("#oderdetail-content").html(data);
+          $(".form-edit").show(500);
+          $(".form-layout").show();
+        }
+      );
+    });
+
+    $(".icon-close").click(function() {
+      $(".form").hide(500);
+      $(".form-layout").hide();
+    });
+
+    $(".form-layout").click(function() {
+      $(".form").hide(500);
+      $(".form-layout").hide();
+    });
+
+    // close message
+    $(".message-overlay").click(function(e) {
+      $(".message").hide(500);
+      $(".message-overlay").hide();
+    });
+  });
+</script>
+<?php if (isset($_SESSION['mess'])) {
+    echo '<span class="message-overlay"></span>';
+    echo '<span class="message">' . $_SESSION['mess'] . '</span>';
+    unset($_SESSION['mess']);
+} ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -91,18 +145,16 @@
                    </div>
                  </li>"; -->
 
-                <li class='nav-item ten-hover'>
-                  <a href='dangnhap.php' class='nav-link font-weight-bold'>
-                    Đăng nhập
-                  </a>
-                </li>
-                <li class='nav-item ten-hover'>
-                  <a href='dangky.php' class='nav-link font-weight-bold'>
-                    Đăng ký
-                  </a>
-                </li>
-
-          
+          <li class='nav-item ten-hover'>
+            <a href='dangnhap.php' class='nav-link font-weight-bold'>
+              Đăng nhập
+            </a>
+          </li>
+          <li class='nav-item ten-hover'>
+            <a href='dangky.php' class='nav-link font-weight-bold'>
+              Đăng ký
+            </a>
+          </li>
       </div>
     </div>
   </nav>
@@ -115,7 +167,7 @@
                     <div class="card card-cascade cascading-admin-card user-card">
                         <div class="admin-up d-flex justify-content-center tendt">
                             <div class="data" style="text-align: center">
-                                <h5 class="font-weight-bold dark-grey-text">LỊCH SỬ MUA HÀNG</h5>
+                                <h5 class="font-weight-bold dark-grey-text">DANH SÁCH ĐƠN HÀNG</h5>
                             </div>
                         </div>
 
@@ -125,63 +177,40 @@
                                     <table id="dtMaterialDesignExample" class="table table-striped" cellspacing="0" width="100%">
                                         <thead>
                                             <tr>
-                                                <th></th>
-                                                <th>Tên điện thoại</th>
-                                                <th>Giá</th>
-                                                <th>Số lượng mua</th>
-                                                <th>Màu sắc</th>
-                                                <th>Ngày đặt hàng</th>
+                                            <th scope="col">Mã đơn</th>
+                                            <th scope="col">Ngày đặt hàng</th>
+                                            <th scope="col">Ngày giao</th>
+                                            <th scope="col">Trạng thái đơn</th>
+                                            <th scope="col">Chi tiết</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <?php foreach ($result as $key) : ?>
                                             <tr>
-                                                <td>Tiger Nixon</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>2011/04/25</td>
-                                                <td>$320,800</td>
+                                              <th scope="row"><?php echo $key['MaDH'] ?></th>
+                                              <td><?php echo $key['NgayDH'] ?></td>
+                                              <td>
+                                                <?php
+                                                  if ($key['NgayGH']=="0000-00-00 00:00:00")
+                                                  echo "Chưa giao hàng";
+                                                  else echo $key['NgayGH'];
+                                                ?>
+                                              </td>
+                                              <td><?php echo $key['TrangThaiDH'] ?></td>
+                                              <td>
+                                                <a class="chitiet-dathang" MaDH="<?php echo $key['MaDH'] ?>">
+                                                  <i class="fas fa-ellipsis-h form-icon"></i>
+                                                </a>
+                                              </td>
                                             </tr>
-                                            <tr>
-                                                <td>Tiger Nixon</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>2011/04/25</td>
-                                                <td>$320,800</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Tiger Nixon</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>2011/04/25</td>
-                                                <td>$320,800</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Tiger Nixon</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>2011/04/25</td>
-                                                <td>$320,800</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Tiger Nixon</td>
-                                                <td>System Architect</td>
-                                                <td>Edinburgh</td>
-                                                <td>61</td>
-                                                <td>2011/04/25</td>
-                                                <td>$320,800</td>
-                                            </tr>
+                                          <?php endforeach; ?>
                                         </tbody>
                                     </table>
-                                </div>
+                                </div><div  id="oderdetail-content" class="form-layout"></div>
                             </section>
                         </div>
                     </div>
                 </div>
-
                 <div class="col-md-4 mb-4">
                     <div class="card profile-card">
                         <div class="avatar z-depth-1-half mb-4">
@@ -191,7 +220,7 @@
                         <div class="card-body pt-0 mt-0">
                             <!-- Tên -->
                             <h3 class="mb-3 font-weight-bold"><strong><?php
-                                $sql_kh = "SELECT * FROM khachhang WHERE MaKH = 1";
+                                $sql_kh = "SELECT * FROM khachhang WHERE MaKH ='$MaKH'";
                                 $query_kh = mysqli_query($mysqli, $sql_kh);
                                 $row_kh = mysqli_fetch_array($query_kh);
                                 echo $row_kh['TenKH'];
@@ -200,7 +229,7 @@
                             <p><b>Email:</b> <?php echo $row_kh['Email'] ?></p>
                             <p><b>SDT:</b> <?php echo $row_kh['SoDienThoai'] ?></p>
                             <p><b>Địa chỉ:</b> <?php
-                                $sql_diachikh = "SELECT * FROM diachikh WHERE MaKH = 1 LIMIT 1";
+                                $sql_diachikh = "SELECT * FROM diachikh WHERE MaKH ='$MaKH' LIMIT 1";
                                 $query_diachikh = mysqli_query($mysqli, $sql_diachikh);
                                 $row_diachikh = mysqli_fetch_array($query_diachikh);
                                 echo $row_diachikh['DiaChi'];
@@ -417,6 +446,7 @@
   <!-- DataTables Select  -->
   <script type="text/javascript" src="./js/khachhang/addons/datatables-select.min.js"></script>
   <!-- Custom scripts -->
+ 
   <script>
     // SideNav Initialization
     $(".button-collapse").sideNav();
@@ -467,3 +497,4 @@
 
 </body>
 </html>
+
